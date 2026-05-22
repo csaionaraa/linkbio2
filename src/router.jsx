@@ -7,7 +7,7 @@ export function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/entradas" element={<App />} />
+        <Route path="/entradas" element={<Entradas />} />
       </Routes>
     </BrowserRouter>
   );
