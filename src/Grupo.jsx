@@ -6,7 +6,6 @@ function Grupo() {
       <div className="overlay"></div>
 
       <main className="content">
-        {/* CONTAINER PEQUENO */}
         <div className="grupo-container">
           <h1 className="grupo-titulo">Parabéns!</h1>
           <p className="grupo-subtitulo">Você acabou de ganhar acesso gratuito!</p>
