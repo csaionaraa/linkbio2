@@ -65,6 +65,33 @@
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
+.grupo-botao {
+	-webkit-animation: scale-up-center 1s cubic-bezier(0.785, 0.135, 0.150, 0.860) infinite alternate both;
+	        animation: scale-up-center 1s cubic-bezier(0.785, 0.135, 0.150, 0.860) infinite alternate both;
+}
+
+@-webkit-keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+}
+@keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+}
+
+
 .grupo-botao:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
