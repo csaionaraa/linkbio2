@@ -6,8 +6,8 @@ export function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
         <Route path="/entradas" element={<Entradas />} />
+        <Route path="/" element={<App />} />
       </Routes>
     </BrowserRouter>
   );
