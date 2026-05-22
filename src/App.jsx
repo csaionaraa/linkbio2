@@ -80,7 +80,6 @@ function App() {
           ))}
 
         </div>
-
         {/* COPYRIGHT */}
         <p className="copyright">
           © Luisa Mendes | Todos os direitos reservados.

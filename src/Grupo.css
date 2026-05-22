@@ -1,0 +1,116 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background: #6842b1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 70px 30px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(5px);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grupo-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  padding: 40px 50px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  text-align: center;
+}
+
+.grupo-titulo {
+  font-size: 32px;
+  color: white;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.grupo-subtitulo {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.grupo-botao {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.grupo-botao:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+.grupo-botao:active {
+  transform: translateY(-1px);
+}
+
+.grupo-termo {
+  width: 220px;
+  margin-top: 40px;
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .grupo-container {
+    padding: 35px 25px;
+    max-width: 100%;
+  }
+
+  .grupo-titulo {
+    font-size: 24px;
+  }
+
+  .grupo-subtitulo {
+    font-size: 14px;
+  }
+
+  .grupo-botao {
+    padding: 12px 30px;
+    font-size: 14px;
+  }
+
+  .grupo-termo {
+    width: 180px;
+  }
+}
