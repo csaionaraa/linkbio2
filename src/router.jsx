@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
-import Grupo from "./Grupo";
+import Entradas from "./Entradas";
 
 export function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/grupo" element={<Grupo/>} />
+        <Route path="/entradas" element={<Entradas/>} />
       </Routes>
     </BrowserRouter>
   );

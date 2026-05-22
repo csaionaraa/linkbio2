@@ -1,6 +1,6 @@
-import './Grupo.css'
+import './Entradas.css'
 
-function Grupo() {
+function Entradas() {
   return (
     <div className="container">
       <div className="overlay"></div>
@@ -22,4 +22,4 @@ function Grupo() {
   )
 }
 
-export default Grupo
+export default Entradas
