@@ -12,7 +12,7 @@ function Entradas() {
           
           <button className="grupo-botao" href="#" >CLIQUE AQUI PARA GARANTIR SEU ACESSO</button>
         <img
-          src="/buttons/termo.png"
+          src="/buttons/termos.png"
           alt="Jogue com responsabilidade"
           className="grupo-termo"
         />

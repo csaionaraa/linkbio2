@@ -87,7 +87,7 @@ function App() {
 
         {/* RESPONSABILIDADE */}
         <img
-          src="/buttons/termo.png"
+          src="/buttons/termos.png"
           alt="Jogue com responsabilidade"
           className="responsible-image"
         />
