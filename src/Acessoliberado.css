@@ -3,7 +3,7 @@
 .acesso-page {
   width: 100%;
   min-height: 100vh;
-  background: #fff;
+  background: #000;
 }
 
 /* FAIXA ROXA EM CIMA */
@@ -42,32 +42,24 @@
   min-height: calc(100vh - 120px);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   overflow: hidden;
+  padding: 0 80px;
+  box-sizing: border-box;
 }
 
 /* BACKGROUND COM IMAGEM */
 .acesso-background {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-size: cover;
+  right: 40px;
+  top: 42%;
+  transform: translateY(-50%);
+  width: 750px;
+  height: 750px;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 0;
-}
-
-.acesso-container {
-  position: relative;
-  width: 100%;
-  min-height: calc(100vh - 120px);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-  padding-left: 80px; /* afasta da borda esquerda */
-  box-sizing: border-box;
+  z-index: 1;
 }
 
 /* CONTEÚDO PRINCIPAL */
@@ -77,12 +69,14 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 40px;
+  padding: 20px;
   box-sizing: border-box;
   gap: 0;
-  width: 500px; /* largura fixa */
+  width: 600px; /* largura fixa */
   min-height: unset; /* remove o 100vh que tava puxando pra baixo */
   border-radius: 12px;
+  margin-left: 110px;
+  margin-top: 50px;
 }
 
 /* LADO ESQUERDO */
@@ -90,13 +84,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 50px;
+  margin-top: 90px;
+
 }
 
 .acesso-logo {
-  width: 200px;
+  width: 180px;
   height: auto;
   animation: fadeInScale 0.8s ease;
+  margin-bottom:-20px;
 }
 
 @keyframes fadeInScale {
@@ -118,12 +115,13 @@
 }
 
 .acesso-main-titulo {
-  font-size: 26px;
+  font-size: 36px;
   color: white;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.4;
   margin: 0;
   animation: slideInLeft 0.8s ease 0.2s both;
+  text-align: center;
 }
 
 @keyframes slideInLeft {
@@ -151,6 +149,33 @@
   animation: slideInLeft 0.8s ease 0.4s both;
 }
 
+.acesso-botao { 
+	-webkit-animation: acesso-botao 1s cubic-bezier(0.785, 0.135, 0.150, 0.860) infinite alternate both;
+	        animation: acesso-botao 1s cubic-bezier(0.785, 0.135, 0.150, 0.860) infinite alternate both;
+}
+
+@-webkit-keyframes acesso-botao { 
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+}
+@keyframes acesso-botao { 
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+}
+
+
 .acesso-botao:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6);
@@ -161,11 +186,12 @@
 }
 
 .acesso-subtitulo {
-  font-size: 16px;
+  font-size: 26px;
   color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
+  line-height: 1.1;
   margin: 0;
   animation: slideInLeft 0.8s ease 0.6s both;
+  text-align: center;
 }
 
 /* LADO DIREITO */
@@ -178,18 +204,35 @@
 
 /* RESPONSIVO - MOBILE */
 @media (max-width: 768px) {
+  .acesso-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
   .acesso-background {
-    background-image: url('/acesso/acesso-mobile.png');
-    background-size: cover;
+    position: relative;
+    width: 370px;
+    height: 370px;
+    background-size: contain;
     background-position: center;
+    order: -1;
+    margin-top: 190px;
+    margin-left: 60px;
   }
 
   .acesso-content {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    width: 100%;
     padding: 20px;
-    margin: 20px;
+    margin-top: -40px;
   }
+.acesso-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  margin-top: -280px;
+  z-index: 2;
+}
 
   .faixa-titulo {
     font-size: 20px;
@@ -199,16 +242,8 @@
     width: 150px;
   }
 
-  .acesso-main-titulo {
-    font-size: 20px;
-  }
-
   .acesso-botao {
     padding: 14px 30px;
-    font-size: 14px;
-  }
-
-  .acesso-subtitulo {
     font-size: 14px;
   }
 

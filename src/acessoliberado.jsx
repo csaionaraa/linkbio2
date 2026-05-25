@@ -10,7 +10,7 @@ function AcessoLiberado() {
 
       <div className="acesso-container">
         <img
-        src= "/acesso/acesso-desktop.png"
+        src= "/acesso/acesso-.png"
         className="acesso-background"
          />
         <div className="acesso-content">
@@ -18,7 +18,7 @@ function AcessoLiberado() {
           <div className="acesso-left">
             <img 
             src="/logo/logo.png" 
-              alt="Logo Luisa" 
+              alt="Logo" 
               className="acesso-logo"
             />
 
