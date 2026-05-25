@@ -238,25 +238,55 @@
 ───────────────────────────────────────── */
 
 @media (max-width: 768px) {
-  .hero-foto {
+  .hero {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 40px 24px;
+    gap: 32px;
+  }
+
+  .hero-imagem {
     width: 100%;
-    opacity: 0.4;
+    order: -1;
+  }
+
+  .hero-imagem img {
+    width: 100%;
+    max-width: 280px;
+    display: block;
+    margin: 0 auto;
   }
 
   .hero-content {
     width: 100%;
-    padding: 60px 24px;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    position: static;
+    align-items: center;    /* ← centraliza tudo */
+    text-align: center;     /* ← texto centralizado */
   }
 
   .hero-titulo {
-    font-size: 36px;
+    font-size: 32px;
+    text-align: center;
   }
 
+  .hero-sub {
+    font-size: 15px;
+    text-align: center;
+  }
+
+  /* DEPOIMENTOS */
   .depoimentos {
-    padding: 60px 20px;
+    padding: 50px 20px;
   }
 
   .dep-titulo {
-    font-size: 26px;
+    font-size: 22px;
+  }
+
+  .carrossel {
+    max-width: 100%;
   }
 }
