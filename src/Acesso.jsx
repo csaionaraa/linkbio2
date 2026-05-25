@@ -24,7 +24,7 @@ function Acesso() {
 
             <div className="acesso-info">
               <h2 className="acesso-main-titulo">
-                Se você quer consistência, aqui está o primeiro passo.
+                Se você quer consistência, aqui está o <span className="acesso-highlight">primeiro passo.</span>
               </h2>
 
               <button className="acesso-botao">ACESSO LIBERADO</button>

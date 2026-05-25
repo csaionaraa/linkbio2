@@ -60,6 +60,9 @@
   z-index: 1;
 }
 
+.acesso-highlight {
+    color:#9c63ff;
+}
 /* CONTEÚDO PRINCIPAL */
 
 .acesso-content {
