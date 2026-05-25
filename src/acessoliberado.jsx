@@ -1,4 +1,4 @@
-import './Acessoliberado.css'
+import './acessoliberado.css'
 
 function AcessoLiberado() {
   return (

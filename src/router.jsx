@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import Entradas from "./Entradas";
-import Acessoliberado from "./Acessoliberado";
+import Acessoliberado from "./acessoliberado";
 
 export function Router() {
   return (
