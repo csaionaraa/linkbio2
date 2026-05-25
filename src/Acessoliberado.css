@@ -1,0 +1,252 @@
+/* PÁGINA ACESSO LIBERADO */
+
+.acesso-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+}
+
+/* FAIXA ROXA EM CIMA */
+.faixa-header {
+  width: 100%;
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.faixa-titulo {
+  font-size: 28px;
+  color: white;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 1px;
+  animation: slideDown 0.6s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* CONTAINER PRINCIPAL */
+.acesso-container {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* BACKGROUND COM IMAGEM */
+.acesso-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.acesso-container {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding-left: 80px; /* afasta da borda esquerda */
+  box-sizing: border-box;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+.acesso-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px;
+  box-sizing: border-box;
+  gap: 0;
+  width: 500px; /* largura fixa */
+  min-height: unset; /* remove o 100vh que tava puxando pra baixo */
+  border-radius: 12px;
+}
+
+/* LADO ESQUERDO */
+.acesso-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.acesso-logo {
+  width: 200px;
+  height: auto;
+  index: 3;
+  animation: fadeInScale 0.8s ease;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.acesso-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.acesso-main-titulo {
+  font-size: 26px;
+  color: white;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0;
+  animation: slideInLeft 0.8s ease 0.2s both;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.acesso-botao {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  color: white;
+  padding: 16px 40px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+  animation: slideInLeft 0.8s ease 0.4s both;
+}
+
+.acesso-botao:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6);
+}
+
+.acesso-botao:active {
+  transform: translateY(-1px);
+}
+
+.acesso-subtitulo {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin: 0;
+  animation: slideInLeft 0.8s ease 0.6s both;
+}
+
+/* LADO DIREITO */
+.acesso-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+/* RESPONSIVO - MOBILE */
+@media (max-width: 768px) {
+  .acesso-background {
+    background-image: url('/acesso/acesso-mobile.png');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .acesso-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .faixa-titulo {
+    font-size: 20px;
+  }
+
+  .acesso-logo {
+    width: 150px;
+  }
+
+  .acesso-main-titulo {
+    font-size: 20px;
+  }
+
+  .acesso-botao {
+    padding: 14px 30px;
+    font-size: 14px;
+  }
+
+  .acesso-subtitulo {
+    font-size: 14px;
+  }
+
+  .acesso-right {
+    min-height: 250px;
+  }
+}
+
+/* RESPONSIVO - EXTRA PEQUENO */
+@media (max-width: 480px) {
+  .faixa-header {
+    padding: 20px 15px;
+  }
+
+  .faixa-titulo {
+    font-size: 18px;
+  }
+
+  .acesso-content {
+    padding: 15px;
+    margin: 15px;
+  }
+
+  .acesso-logo {
+    width: 120px;
+  }
+
+  .acesso-main-titulo {
+    font-size: 18px;
+  }
+
+  .acesso-botao {
+    padding: 12px 25px;
+    font-size: 13px;
+  }
+
+  .acesso-subtitulo {
+    font-size: 13px;
+  }
+}
