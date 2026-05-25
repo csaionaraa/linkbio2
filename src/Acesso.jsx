@@ -10,7 +10,7 @@ function Acesso() {
 
       <div className="acesso-container">
         <img
-        src= "/acesso/acesso-.png"
+        src= "/imgs/acesso-.png"
         className="acesso-background"
          />
         <div className="acesso-content">
