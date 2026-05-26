@@ -1,6 +1,7 @@
 
 import './Entradas.css'
 
+
 function Entradas() {
 
 
@@ -17,7 +18,6 @@ function Entradas() {
           </p>
 
           <button
-            class= "trackfather"
             className="grupo-botao trackfather"
             type="button"
             // data-tf-track="click"
