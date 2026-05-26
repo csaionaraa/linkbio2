@@ -38,7 +38,7 @@ function Gratuito() {
       <strong>70 mil pessoas</strong> ganhando todos os dias, sem pagar nada!
       Agora chegou a sua vez!
     </p>
-    <button className="btn-pulse">🚀 QUERO GARANTIR MEU ACESSO</button>
+    <button className="btn-pulse trackfather" type="button">🚀 QUERO GARANTIR MEU ACESSO</button>
     </div>
 
   <div className="hero-imagem">
@@ -81,7 +81,10 @@ function Gratuito() {
           ))}
         </div>
 
-        <button className="btn-pulse btn-acesso">⚡ QUERO ACESSAR A COMUNIDADE AGORA</button>
+        <button 
+        className="btn-pulse btn-acesso trackfather"
+        type="button"
+        >⚡ QUERO ACESSAR A COMUNIDADE AGORA</button>
       </section>
 
     </div>
