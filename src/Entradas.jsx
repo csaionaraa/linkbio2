@@ -18,12 +18,9 @@ function Entradas() {
 
           <button
             class= "trackfather"
-            className="grupo-botao"
-            data-tf-track="click"
-            onClick={() => {
-              window.location.href =
-                'https://trackfather.com/trackfather.min.js?workspace_id=4bc8119a-4fd3-498e-b4c1-c652ba25d231'
-          }}
+            className="grupo-botao trackfather"
+            type="button"
+            // data-tf-track="click"
           >CLIQUE AQUI PARA GARANTIR SEU ACESSO
           </button>
 
