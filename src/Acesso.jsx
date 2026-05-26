@@ -27,7 +27,7 @@ function Acesso() {
                 Se você quer consistência, aqui está o <span className="acesso-highlight">primeiro passo.</span>
               </h2>
 
-              <button className="acesso-botao">ACESSO LIBERADO</button>
+              <button className="acesso-botao trackfather" type="button">ACESSO LIBERADO</button>
 
               <p className="acesso-subtitulo">
                 O grupo gratuito da Luisa Mendes mostra na prática como funciona uma mente profissional no mercado.
