@@ -3,6 +3,7 @@ import App from "./App";
 import Entradas from "./Entradas";
 import Acesso from "./Acesso";
 import Gratuito from "./Gratuito";
+import Roleta from "./Roleta";
 
 export function Router() {
   return (
@@ -11,6 +12,7 @@ export function Router() {
         <Route path="/entradas" element={<Entradas />} />
         <Route path="/acesso" element={<Acesso />} />
         <Route path="/gratuito" element={<Gratuito />} />
+        <Route path="/roleta" element={<Roleta />} />
         <Route path="/" element={<App />} />
       </Routes>
     </BrowserRouter>
