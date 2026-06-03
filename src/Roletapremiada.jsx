@@ -6,7 +6,7 @@ import "./Roletapremiada.css";
 // ─────────────────────────────────────────────
 const CONFIG = {
   REDIRECT_URL: "https://luisamendestips.com.br/premiacao",
-  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyqFVBRYcF_u_HnP1DKXuuy-JCx1h-_U2C93jw1xfBVwX2qGn_MI5DCwt81x9FoUH7PzA/exec",
+  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzmWvdJg8v96JJhqWkLGcKtu9rS1TyceecwisUc66sI17jotp0duCx9c5Eo9uO0uUd_Ng/exec",
 
   HERO_BG_DESKTOP: "/imgs/roleta-desktop.png",
   HERO_BG_MOBILE: "/imgs/roleta-mobile.png",
@@ -512,24 +512,90 @@ async function sendToGoogleSheets(userData, prize) {
       return;
     }
 
-    const payload = new URLSearchParams({
-      nome: userData.nome,
-      sobrenome: userData.sobrenome,
-      email: userData.email,
-      telefone: userData.telefone,
-      premio: prize.prize,
+    // Build params (normalize email/phone)
+    const params = {
+      nome: (userData.nome || "").trim(),
+      sobrenome: (userData.sobrenome || "").trim(),
+      email: _normalizeEmail(userData.email),
+      telefone: _normalizePhone(userData.telefone),
+      premio: (prize && prize.prize) ? prize.prize : (prize || ""),
       dataHora: new Date().toLocaleString("pt-BR"),
-      origem: "roleta-subpagina",
+      origem: "roletapremiada",
+      sheetName: "ROLETAPREMIADA",
+    };
+
+    // Prevent quick duplicate sends: check last-sent key
+    try {
+      const key = `${params.email}|${params.telefone}|${params.premio}`;
+      const raw = localStorage.getItem("rp_last_sent");
+      if (raw) {
+        const prev = JSON.parse(raw);
+        if (prev && prev.key === key && Date.now() - prev.ts < 15000) {
+          console.log("sendToGoogleSheets: skipped duplicate (recent)");
+          return;
+        }
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+
+    // Also avoid sending if already in local submissions history
+    try {
+      const subs = _loadLocalSubmissions();
+      const exists = subs.find(s => ( (s.email || "") === params.email && (s.telefone || "") === params.telefone && (s.premio || "") === params.premio ));
+      if (exists) {
+        console.log("sendToGoogleSheets: skipped duplicate (already saved locally)");
+        return;
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    // Submit via hidden iframe form to avoid CORS/preflight and ensure application/x-www-form-urlencoded
+    const iframeName = `rp_post_target_${Date.now()}`;
+    const iframe = document.createElement("iframe");
+    iframe.name = iframeName;
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = CONFIG.GOOGLE_SCRIPT_URL;
+    form.target = iframeName;
+
+    Object.keys(params).forEach((k) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = k;
+      input.value = params[k];
+      form.appendChild(input);
     });
 
-    await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: payload.toString(),
-    });
+    form.style.display = "none";
+    document.body.appendChild(form);
+    form.submit();
+
+    // Mark as recently sent and save locally to avoid duplicates
+    try {
+      const key = `${params.email}|${params.telefone}|${params.premio}`;
+      localStorage.setItem("rp_last_sent", JSON.stringify({ key, ts: Date.now() }));
+      _saveLocalSubmission({
+        nome: params.nome,
+        sobrenome: params.sobrenome,
+        email: params.email,
+        telefone: params.telefone,
+        premio: params.premio,
+        dataHora: new Date().toISOString(),
+      });
+    } catch (e) {
+      // ignore storage errors
+    }
+
+    // cleanup after a short delay
+    setTimeout(() => {
+      try { document.body.removeChild(form); } catch (e) {}
+      try { document.body.removeChild(iframe); } catch (e) {}
+    }, 4000);
   } catch (error) {
     console.error("Erro ao enviar para Google Sheets:", error);
   }
@@ -677,75 +743,75 @@ function WheelSection({ sectionRef }) {
     });
   }
 
-  return (
-    <section className="rp-wheel-section" ref={sectionRef}>
-      <h2 className="rp-wheel-section__heading">GIRE A ROLETA</h2>
-      <p className="rp-wheel-section__sub">Preencha o formulário e descubra seu prêmio</p>
+    return (
+      <section className="rp-wheel-section" ref={sectionRef}>
+        <h2 className="rp-wheel-section__heading">GIRE A ROLETA</h2>
+        <p className="rp-wheel-section__sub">Preencha o formulário e descubra seu prêmio</p>
 
       
 
-      <div className="rp-wheel-wrap">
-        <div className="rp-wheel-pointer" />
-        <canvas
-          ref={canvasRef}
-          width={canvasSize}
-          height={canvasSize}
-          className="rp-wheel-canvas"
-        />
-      </div>
+        <div className="rp-wheel-wrap">
+          <div className="rp-wheel-pointer" />
+          <canvas
+            ref={canvasRef}
+            width={canvasSize}
+            height={canvasSize}
+            className="rp-wheel-canvas"
+          />
+        </div>
 
-      {result && (
-        <div className="rp-result">
-          <div className="rp-result__emoji">{result.emoji}</div>
-          <p className="rp-result__congrats">PARABÉNS! 🎉</p>
-          <p className="rp-result__prize">
-            Você ganhou: <span>{result.prize}</span>
-          </p>
-
-          {countdown !== null && (
-            <p className="rp-result__redirect">
-              Redirecionando em <strong>{countdown}s</strong>...
+        {result && (
+          <div className="rp-result">
+            <div className="rp-result__emoji">{result.emoji}</div>
+            <p className="rp-result__congrats">PARABÉNS! 🎉</p>
+            <p className="rp-result__prize">
+              Você ganhou: <span>{result.prize}</span>
             </p>
-          )}
-        </div>
-      )}
 
-      <button
-        className="rp-btn"
-        onClick={() => !spinning && !result && setShowModal(true)}
-        disabled={spinning || !!result}
-      >
-        {spinning ? "GIRANDO..." : result ? "GIRO FINALIZADO" : "CLIQUE E RODE AGORA →"}
-        <span className="rp-btn__sub">100% GRATUITO</span>
-      </button>
+            {countdown !== null && (
+              <p className="rp-result__redirect">
+                Redirecionando em <strong>{countdown}s</strong>...
+              </p>
+            )}
+          </div>
+        )}
 
-      {showModal && (
-        <FormModal
-          onClose={() => !sending && setShowModal(false)}
-          onSubmit={handleFormSubmit}
-          sending={sending}
-        />
-      )}
+        <button
+          className="rp-btn"
+          onClick={() => !spinning && !result && setShowModal(true)}
+          disabled={spinning || !!result}
+        >
+          {spinning ? "GIRANDO..." : result ? "GIRO FINALIZADO" : "CLIQUE E RODE AGORA →"}
+          <span className="rp-btn__sub">100% GRATUITO</span>
+        </button>
+
+        {showModal && (
+          <FormModal
+            onClose={() => !sending && setShowModal(false)}
+            onSubmit={handleFormSubmit}
+            sending={sending}
+          />
+        )}
       
-      {/* Legal section inserted below the wheel */}
-      <div className="rp-legal-root">
-        <div className="rp-legal-divider" aria-hidden />
+        {/* Legal section inserted below the wheel */}
+        <div className="rp-legal-root">
+          <div className="rp-legal-divider" aria-hidden />
 
-        <div className="rp-legal-container">
-          <h4 className="rp-legal__title">AVISO LEGAL IMPORTANTE:</h4>
-          <ul className="rp-legal__list">
-            <li>- Apostas esportivas envolvem riscos financeiros. Nunca aposte mais do que pode perder.</li>
-            <li>- Resultados passados não garantem lucros futuros. Aposte com responsabilidade.</li>
-            <li>- Este site é destinado apenas para maiores de 18 anos.</li>
-            <li>- Jogue com responsabilidade. Se você tem problemas com jogos, procure ajuda.</li>
-          </ul>
+          <div className="rp-legal-container">
+            <h4 className="rp-legal__title">AVISO LEGAL IMPORTANTE:</h4>
+            <ul className="rp-legal__list">
+              <li>- Apostas esportivas envolvem riscos financeiros. Nunca aposte mais do que pode perder.</li>
+              <li>- Resultados passados não garantem lucros futuros. Aposte com responsabilidade.</li>
+              <li>- Este site é destinado apenas para maiores de 18 anos.</li>
+              <li>- Jogue com responsabilidade. Se você tem problemas com jogos, procure ajuda.</li>
+            </ul>
+          </div>
+
+          <div className="rp-legal-copyright">© 2026 Luisa Mendes. Todos os direitos reservados.</div>
         </div>
-
-        <div className="rp-legal-copyright">© 2026 Luisa Mendes. Todos os direitos reservados.</div>
-      </div>
-    </section>
-  );
-}
+      </section>
+    );
+  }
 
 // ─────────────────────────────────────────────
 // PAGE
