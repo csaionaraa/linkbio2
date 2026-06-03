@@ -5,7 +5,7 @@ import "./Roleta.css";
 // CONFIG
 // ─────────────────────────────────────────────
 const CONFIG = {
-  REDIRECT_URL: "https://SEU-LINK-AQUI.com",
+  REDIRECT_URL: "https://luisamendestips.com.br/premio",
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw6IJXOfhS93mWjtsxopSjZ3sB19Un671BMA3UCYZwnaAnFDD8rtSo6SxxlpfBPpsk5Ng/exec",
 
   HERO_BG_DESKTOP: "/imgs/roleta-desktop.png",
