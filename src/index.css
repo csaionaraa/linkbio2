@@ -4,8 +4,13 @@
   box-sizing: border-box;
 }
 
-body {
+html, body, input, button, textarea, select, a {
   font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
   overflow-x: hidden;
 }
 

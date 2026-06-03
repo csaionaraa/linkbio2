@@ -1,286 +1,772 @@
-import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Roleta.css';
+import { useEffect, useRef, useState } from "react";
+import "./Roleta.css";
 
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercopy'; // Substitua com seu ID
-const PRIZES = [
-  { name: 'Ouro', color: '#FFD700', percentage: 0 },
-  { name: 'Prata', color: '#C0C0C0', percentage: 50 },
-  { name: 'Bronze', color: '#CD7F32', percentage: 50 }
+// ─────────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────────
+const CONFIG = {
+  REDIRECT_URL: "https://SEU-LINK-AQUI.com",
+  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw6IJXOfhS93mWjtsxopSjZ3sB19Un671BMA3UCYZwnaAnFDD8rtSo6SxxlpfBPpsk5Ng/exec",
+
+  HERO_BG_DESKTOP: "/imgs/roleta-desktop.png",
+  HERO_BG_MOBILE: "/imgs/roleta-mobile.png",
+};
+
+// ─────────────────────────────────────────────
+// ROLETA
+// Ouro aparece visualmente, mas fica explícito
+// que este giro só libera Prata/Bronze.
+// ─────────────────────────────────────────────
+const SEGMENTS = [
+  { label: "OURO", color1: "#5b21b6", color2: "#a78bfa", prize: "Prêmio Ouro", emoji: "", selectable: false },
+  { label: "PRATA", color1: "#6d28d9", color2: "#c4b5fd", prize: "Prêmio Prata", emoji: "", selectable: true },
+  { label: "BRONZE", color1: "#7c3aed", color2: "#c4b5fd", prize: "Prêmio Bronze", emoji: "", selectable: true },
+  { label: "OURO", color1: "#5b21b6", color2: "#a78bfa", prize: "Prêmio Ouro", emoji: "", selectable: false },
+  { label: "PRATA", color1: "#6d28d9", color2: "#c4b5fd", prize: "Prêmio Prata", emoji: "", selectable: true },
+  { label: "BRONZE", color1: "#7c3aed", color2: "#c4b5fd", prize: "Prêmio Bronze", emoji: "", selectable: true },
 ];
 
-export default function Roleta() {
-  const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ nome: '', sobrenome: '', email: '', telefone: '' });
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [prizeWon, setPrizeWon] = useState(null);
-  const [wheelRotation, setWheelRotation] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-  const wheelRef = useRef(null);
-  const navigate = useNavigate();
+const NUM_SEG = SEGMENTS.length;
+const SEG_ANGLE = (Math.PI * 2) / NUM_SEG;
+const BASE_ANGLE = -Math.PI / 2;
 
-  // Verificar se o email já foi cadastrado (localStorage simulando verificação)
-  const isEmailRegistered = (email) => {
-    const registeredEmails = JSON.parse(localStorage.getItem('registeredEmails') || '[]');
-    return registeredEmails.includes(email);
-  };
+const PRIZE_TIERS = [
+  {
+    key: "ouro",
+    color: "#FFD700",
+    icon: "/icons/coroa-ouroo.webp",
+    title: "PRÊMIOS OURO",
+    items: [
+      { icon: "/icons/ticket-ouro.webp", text: "Banca de R$10.000,00" },
+      { icon: "/icons/presente-ouro.webp", text: "Acesso VIP à TODOS os meus Grupos" },
+      { icon: "/icons/coroa-ouro.webp", text: "Assistir um Jogo no Estádio" },
+    ],
+  },
+  {
+    key: "prata",
+    color: "#C0C0C0",
+    icon: "/icons/medalha-prata.webp",
+    title: "PRÊMIOS PRATA",
+    items: [
+      { icon: "/icons/presente-prata.webp", text: "Acesso VITALÍCIO ao meu Principal Grupo + R$50 de Banca" },
+      { icon: "/icons/coroa-prata.webp", text: "Banca de R$500" },
+      { icon: "/icons/ticket-prata.webp", text: "Camisa Oficial do seu Clube do Coração" },
+    ],
+  },
+  {
+    key: "bronze",
+    color: "#F28C28",
+    icon: "/icons/medalha-bronze.webp",
+    title: "PRÊMIOS BRONZE",
+    items: [
+      { icon: "/icons/presente-bronze2.webp", text: "30 Dias de Acesso Gratuito ao Grupo VIP" },
+      { icon: "/icons/presente-bronze2.webp", text: "7 Dias de Acesso ao VIP + Banca de R$50" },
+      { icon: "/icons/coroa-bronze2.webp", text: "Banca de R$35" },
+    ],
+  },
+];
 
-  // Salvar email como registrado
-  const registerEmail = (email) => {
-    const registeredEmails = JSON.parse(localStorage.getItem('registeredEmails') || '[]');
-    if (!registeredEmails.includes(email)) {
-      registeredEmails.push(email);
-      localStorage.setItem('registeredEmails', JSON.stringify(registeredEmails));
+function getCanvasSize() {
+  if (typeof window === "undefined") return 320;
+  if (window.innerWidth < 480) return 300;
+  if (window.innerWidth < 768) return 340;
+  return 400;
+}
+
+// ─────────────────────────────────────────────
+// MARQUEE
+// ─────────────────────────────────────────────
+function Marquee() {
+  const text = Array(12).fill("GIRO PREMIADO • ").join("");
+  return (
+    <div className="rp-marquee">
+      <span className="rp-marquee__track">
+        {text}
+        {text}
+      </span>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// HERO
+// ─────────────────────────────────────────────
+function Hero({ onCtaClick }) {
+  return (
+    <section
+      className="rp-hero"
+      style={{
+        "--hero-bg-desktop": `url('${CONFIG.HERO_BG_DESKTOP}')`,
+        "--hero-bg-mobile": `url('${CONFIG.HERO_BG_MOBILE}')`,
+      }}
+    >
+      <div className="rp-hero__glow" />
+      <div className="rp-hero__content">
+        <h1 className="rp-hero__title">
+          ROLETA
+          <br />
+          PREMIADA
+        </h1>
+
+        <h2 className="rp-hero__subtitle">GIRE E GANHE!</h2>
+
+        <p className="rp-hero__desc">
+          Gire a <strong>roleta exclusiva do Luisa Mendes</strong> e descubra seu prêmio.
+        </p>
+
+        <button className="rp-btn" onClick={onCtaClick}>
+          CLIQUE E RODE AGORA →
+          <span className="rp-btn__sub">100% GRATUITO</span>
+        </button>
+      </div>
+    </section>
+  );
+}
+
+// ─────────────────────────────────────────────
+// PRÊMIOS
+// ─────────────────────────────────────────────
+function PrizesSection() {
+  return (
+    <section className="rp-prizes">
+      <div className="rp-prizes__inner">
+        <h2 className="rp-prizes__heading">
+          PRÊMIOS <span>EXCLUSIVOS</span>
+        </h2>
+        <p className="rp-prizes__sub">
+          Confira os prêmios disponíveis na campanha
+        </p>
+        <div className="rp-prizes__grid">
+          {PRIZE_TIERS.map((tier) => (
+            <div
+              key={tier.key}
+              className={`rp-prize-card prize-card rp-prize-card--${tier.key}`}
+              style={{
+                borderColor: `${tier.color}40`,
+                boxShadow: `0 0 30px ${tier.color}15`,
+                background: "radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0) 70%)",
+              }}
+            >
+              <div className="rp-prize-card__header" style={{ marginBottom: 12, textAlign: 'center' }}>
+                <img className="rp-prize-card__main-img" src={tier.icon} alt="" />
+                <h3 className="rp-prize-card__title" style={{ color: tier.color, marginTop: 10 }}>{tier.title}</h3>
+              </div>
+
+              <div className="rp-prize-card__list">
+                {tier.items.map((item, index) => (
+                  <div key={index} className="rp-prize-card__item">
+                      <img className="rp-prize-card__item-img" src={item.icon} alt="" />
+
+                      <span className="rp-prize-card__item-text">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Divider component (glowing purple bar)
+function SectionDivider() {
+  return (
+    <div className="rp-section-divider" aria-hidden>
+      <div className="rp-section-divider__bar" />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// FORMULÁRIO
+// ─────────────────────────────────────────────
+function Field({ label, id, value, error, onChange, placeholder, type = "text" }) {
+  return (
+    <div className="rp-field">
+      <label htmlFor={id}>{label}</label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        className={error ? "error" : ""}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {error && <span className="rp-field__error">{error}</span>}
+    </div>
+  );
+}
+
+function FormModal({ onClose, onSubmit, sending }) {
+  const [form, setForm] = useState({
+    nome: "",
+    sobrenome: "",
+    email: "",
+    telefone: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  function handle(field, value) {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
+  }
+
+  function handlePhone(value) {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    let masked = digits;
+
+    if (digits.length > 2) {
+      masked = `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
     }
-  };
 
-  // Enviar dados para Google Sheets
-  const sendToGoogleSheets = async (formDataToSend, prize) => {
+    if (digits.length > 7) {
+      masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+    }
+
+    handle("telefone", masked);
+  }
+
+  function validate() {
+    const nextErrors = {};
+
+    if (!form.nome.trim()) nextErrors.nome = "Campo obrigatório";
+    if (!form.sobrenome.trim()) nextErrors.sobrenome = "Campo obrigatório";
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) nextErrors.email = "E-mail inválido";
+    if (!form.telefone.trim() || form.telefone.replace(/\D/g, "").length < 10) nextErrors.telefone = "Telefone inválido";
+
+    // duplicate checks against localStorage
     try {
-      const data = {
-        nome: formDataToSend.nome,
-        sobrenome: formDataToSend.sobrenome,
-        email: formDataToSend.email,
-        telefone: formDataToSend.telefone,
-        premio: prize,
-        data: new Date().toLocaleString('pt-BR')
-      };
+      const subs = _loadLocalSubmissions();
+      const emailNorm = _normalizeEmail(form.email);
+      const phoneNorm = _normalizePhone(form.telefone);
+      const nameKey = `${form.nome.trim().toLowerCase()} ${form.sobrenome.trim().toLowerCase()}`;
 
-      await fetch(GOOGLE_SHEETS_URL, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        mode: 'no-cors'
-      });
-    } catch (error) {
-      console.error('Erro ao enviar para Google Sheets:', error);
+      const foundName = subs.find((s) => (((s.nome || "") + " " + (s.sobrenome || "")).trim().toLowerCase() === nameKey));
+      const foundEmail = subs.find((s) => ( (s.email || "") === emailNorm ));
+      const foundPhone = subs.find((s) => ( (s.telefone || "") === phoneNorm ));
+
+      if (foundName) nextErrors.nome = "Usuário já cadastrado";
+      if (foundEmail) nextErrors.email = "E-mail já cadastrado";
+      if (foundPhone) nextErrors.telefone = "Telefone já cadastrado";
+    } catch (e) {
+      // ignore storage errors
     }
-  };
 
-  // Selecionar prêmio com probabilidade
-  const selectPrize = () => {
-    const random = Math.random() * 100;
-    if (random < 50) {
-      return PRIZES[1]; // Prata
-    } else {
-      return PRIZES[2]; // Bronze
-    }
-  };
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  }
 
-  // Girar a roleta
-  const spinWheel = () => {
-    if (isSpinning) return;
-
-    const prize = selectPrize();
-    const prizeIndex = PRIZES.indexOf(prize);
-    const segmentAngle = 360 / PRIZES.length;
-    const randomSpin = Math.random() * 360;
-    const totalRotation = 360 * 5 + (prizeIndex * segmentAngle) + randomSpin;
-
-    setIsSpinning(true);
-    setWheelRotation(totalRotation);
-
-    // Esperar a animação terminar
-    setTimeout(() => {
-      setPrizeWon(prize);
-      setSubmitted(true);
-
-      // Enviar dados para Google Sheets
-      sendToGoogleSheets(formData, prize.name);
-
-      // Esperar 3 segundos e redirecionar
-      setTimeout(() => {
-        navigate('/');
-      }, 3000);
-    }, 4000);
-  };
-
-  // Manipular envio do formulário
-  const handleFormSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-
-    if (!formData.nome || !formData.sobrenome || !formData.email || !formData.telefone) {
-      alert('Por favor, preencha todos os campos!');
-      return;
+    if (!sending && validate()) {
+      onSubmit(form);
     }
-
-    if (isEmailRegistered(formData.email)) {
-      alert('Este email já foi registrado! Cada pessoa pode cadastrar apenas uma vez.');
-      return;
-    }
-
-    // Registrar email
-    registerEmail(formData.email);
-
-    // Fechar modal e girar
-    setShowModal(false);
-    setTimeout(() => {
-      spinWheel();
-    }, 300);
-  };
-
-  // Manipular mudança no formulário
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Abrir modal
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  // Fechar modal
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  }
 
   return (
-    <div className="roleta-container">
-      {/* SEÇÃO HERO */}
-      <section className="roleta-hero">
-        <div className="hero-content">
-          <h1 className="hero-title">ROLETA PREMIADA GIRE E GANHE!</h1>
-          <p className="hero-subtitle">
-            Gire a roleta exclusiva do Japa e tenha a oportunidade de ganhar prêmios incríveis em uma única tentativa!
-          </p>
-          <button className="hero-btn" onClick={openModal}>
-            <span className="btn-text">CLIQUE E RODE AGORA →</span>
-            <span className="btn-subtitle">100% GRATUITO</span>
-          </button>
-        </div>
-      </section>
+    <div className="rp-overlay" onClick={(e) => e.target === e.currentTarget && !sending && onClose()}>
+      <div className="rp-modal">
+        <h2 className="rp-modal__title">
+          Liberar <span>Roleta</span>
+        </h2>
 
-      {/* CONTAINER COM TEXTO EM LOOP */}
-      <section className="scrolling-container">
-        <div className="scrolling-text">
-          <span>GIRO PREMIADO • </span>
-          <span>GIRO PREMIADO • </span>
-          <span>GIRO PREMIADO • </span>
-          <span>GIRO PREMIADO • </span>
-          <span>GIRO PREMIADO • </span>
-        </div>
-      </section>
-
-      {/* SEÇÃO PRÊMIOS EXCLUSIVOS */}
-      <section className="premios-section">
-        <h2 className="section-title">PRÊMIOS EXCLUSIVOS</h2>
-        <p className="section-subtitle">
-          Confira os incríveis prêmios que você pode ganhar girando a roleta
+        <p className="rp-modal__sub">
+          Preencha seus dados para liberar o giro
         </p>
-        <div className="premios-grid">
-          <div className="premio-card">
-            <div className="premio-icon">🏅</div>
-            <h3>Prêmios Variados</h3>
-            <p>Ganhe prêmios exclusivos</p>
-          </div>
-          <div className="premio-card">
-            <div className="premio-icon">💎</div>
-            <h3>Créditos Bônus</h3>
-            <p>Créditos para usar na plataforma</p>
-          </div>
-          <div className="premio-card">
-            <div className="premio-icon">🎁</div>
-            <h3>Surpresas Especiais</h3>
-            <p>Surpresas incríveis aguardam você</p>
-          </div>
-        </div>
-      </section>
 
-      {/* SEÇÃO ROLETA */}
-      <section className="wheel-section">
-        <h2 className="section-title">GIRE A ROLETA</h2>
-        <p className="section-subtitle">Clique no botão e descubra seu prêmio!</p>
+        <form className="rp-modal__form" onSubmit={handleSubmit}>
+          <div className="rp-modal__row">
+            <Field
+              label="Nome"
+              id="nome"
+              value={form.nome}
+              error={errors.nome}
+              onChange={(v) => handle("nome", v)}
+              placeholder="Seu nome"
+            />
 
-        <div className="wheel-container">
-          <div className="wheel" ref={wheelRef} style={{ transform: `rotate(${wheelRotation}deg)` }}>
-            {PRIZES.map((prize, index) => {
-              const angle = (360 / PRIZES.length) * index;
-              return (
-                <div
-                  key={prize.name}
-                  className="wheel-segment"
-                  style={{
-                    background: prize.color,
-                    transform: `rotate(${angle}deg)`,
-                  }}
-                >
-                  <span className="wheel-text">{prize.name}</span>
-                </div>
-              );
-            })}
+            <Field
+              label="Sobrenome"
+              id="sobrenome"
+              value={form.sobrenome}
+              error={errors.sobrenome}
+              onChange={(v) => handle("sobrenome", v)}
+              placeholder="Seu sobrenome"
+            />
           </div>
-          <div className="wheel-pointer"></div>
-        </div>
 
-        {!submitted && (
-          <button className="spin-btn" onClick={openModal} disabled={isSpinning}>
-            {isSpinning ? 'GIRANDO...' : 'CLIQUE E RODE AGORA'}
+          <Field
+            label="E-mail"
+            id="email"
+            type="email"
+            value={form.email}
+            error={errors.email}
+            onChange={(v) => handle("email", v)}
+            placeholder="seu@email.com"
+          />
+
+          <Field
+            label="Telefone"
+            id="telefone"
+            type="tel"
+            value={form.telefone}
+            error={errors.telefone}
+            onChange={handlePhone}
+            placeholder="(99) 99999-9999"
+          />
+
+          <button className="rp-btn rp-modal__submit" type="submit" disabled={sending}>
+            {sending ? "LIBERANDO..." : "LIBERAR A ROLETA 🎰"}
+            <span className="rp-btn__sub">100% gratuito</span>
           </button>
-        )}
 
-        {submitted && prizeWon && (
-          <div className="prize-result">
-            <h3>Parabéns! 🎉</h3>
-            <p>Você ganhou: <strong>{prizeWon.name}</strong></p>
-            <p className="redirect-msg">Redirecionando em breve...</p>
-          </div>
-        )}
-      </section>
+          <button
+            className="rp-modal__close"
+            type="button"
+            onClick={onClose}
+            disabled={sending}
+          >
+            Cancelar
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
 
-      {/* MODAL DO FORMULÁRIO */}
-      {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>✕</button>
-            <h2>Libere sua Roleta</h2>
-            <form onSubmit={handleFormSubmit}>
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="nome"
-                  placeholder="Nome"
-                  value={formData.nome}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="sobrenome"
-                  placeholder="Sobrenome"
-                  value={formData.sobrenome}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="tel"
-                  name="telefone"
-                  placeholder="Telefone"
-                  value={formData.telefone}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <button type="submit" className="form-btn" disabled={isSpinning}>
-                LIBERAR ROLETA
-              </button>
-            </form>
-          </div>
+// ─────────────────────────────────────────────
+// HOOK DA ROLETA
+// ─────────────────────────────────────────────
+function useSpinWheel(canvasSize) {
+  const canvasRef = useRef(null);
+  const rotationRef = useRef(0);
+  const animationRef = useRef(null);
+  const [spinning, setSpinning] = useState(false);
+
+  function drawWheel(rotation = rotationRef.current) {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    const size = canvas.width;
+    const cx = size / 2;
+    const cy = size / 2;
+    const r = cx - 16;
+
+    ctx.clearRect(0, 0, size, size);
+
+    // brilho externo
+    ctx.save();
+    ctx.shadowColor = "#a855f7";
+    ctx.shadowBlur = 28;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r + 8, 0, Math.PI * 2);
+    ctx.strokeStyle = "#7c3aed";
+    ctx.lineWidth = 8;
+    ctx.stroke();
+    ctx.restore();
+
+    for (let i = 0; i < NUM_SEG; i++) {
+      const seg = SEGMENTS[i];
+      const start = BASE_ANGLE + rotation + i * SEG_ANGLE;
+      const end = start + SEG_ANGLE;
+
+      const grad = ctx.createLinearGradient(0, 0, size, size);
+      grad.addColorStop(0, seg.color1);
+      grad.addColorStop(1, seg.color2);
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, start, end);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      if (!seg.selectable) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, r, start, end);
+        ctx.closePath();
+        ctx.fillStyle = "rgba(15, 23, 42, 0.30)";
+        ctx.fill();
+        ctx.restore();
+      }
+
+      ctx.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // texto
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(start + SEG_ANGLE / 2);
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `700 ${size < 340 ? 12 : 14}px Arial`;
+      ctx.shadowColor = "rgba(0,0,0,0.45)";
+      ctx.shadowBlur = 4;
+      ctx.fillText(seg.label, r - 18, -2);
+      ctx.restore();
+    }
+
+    // centro
+    const centerGrad = ctx.createRadialGradient(cx, cy, 4, cx, cy, 46);
+    centerGrad.addColorStop(0, "#e9d5ff");
+    centerGrad.addColorStop(1, "#7c3aed");
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 46, 0, Math.PI * 2);
+    ctx.fillStyle = centerGrad;
+    ctx.fill();
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "700 16px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("GIRE", cx, cy);
+  }
+
+  useEffect(() => {
+    drawWheel(rotationRef.current);
+  }, [canvasSize]);
+
+  useEffect(() => {
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
+
+  function pickWinner() {
+    const targetLabel = Math.random() < 0.5 ? "PRATA" : "BRONZE";
+
+    const pool = SEGMENTS.map((segment, index) => ({ segment, index })).filter(
+      ({ segment }) => segment.selectable && segment.label === targetLabel
+    );
+
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  function spin(winnerIndex, onDone) {
+    if (spinning) return;
+
+    setSpinning(true);
+
+    const currentRotation = rotationRef.current;
+    const targetCenter = winnerIndex * SEG_ANGLE + SEG_ANGLE / 2;
+    let delta = (-targetCenter - (currentRotation % (Math.PI * 2)));
+
+    while (delta <= 0) {
+      delta += Math.PI * 2;
+    }
+
+    delta += Math.PI * 2 * 8;
+
+    const duration = 5000;
+    const startTime = performance.now();
+
+    function animate(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 4);
+      const nextRotation = currentRotation + delta * eased;
+
+      rotationRef.current = nextRotation;
+      drawWheel(nextRotation);
+
+      if (t < 1) {
+        animationRef.current = requestAnimationFrame(animate);
+      } else {
+        rotationRef.current = (currentRotation + delta) % (Math.PI * 2);
+        drawWheel(rotationRef.current);
+        setSpinning(false);
+        onDone?.();
+      }
+    }
+
+    animationRef.current = requestAnimationFrame(animate);
+  }
+
+  return {
+    canvasRef,
+    spinning,
+    pickWinner,
+    spin,
+  };
+}
+
+// ─────────────────────────────────────────────
+// GOOGLE SHEETS
+// ─────────────────────────────────────────────
+async function sendToGoogleSheets(userData, prize) {
+  try {
+    if (!CONFIG.GOOGLE_SCRIPT_URL || CONFIG.GOOGLE_SCRIPT_URL.includes("SEU-ID-AQUI")) {
+      console.warn("GOOGLE_SCRIPT_URL não configurada.");
+      return;
+    }
+
+    const payload = new URLSearchParams({
+      nome: userData.nome,
+      sobrenome: userData.sobrenome,
+      email: userData.email,
+      telefone: userData.telefone,
+      premio: prize.prize,
+      dataHora: new Date().toLocaleString("pt-BR"),
+      origem: "roleta-subpagina",
+    });
+
+    await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: payload.toString(),
+    });
+  } catch (error) {
+    console.error("Erro ao enviar para Google Sheets:", error);
+  }
+}
+
+// ─────────────────────────────────────────────
+// LOCAL STORAGE HELPERS (prevent duplicate registrations)
+// ─────────────────────────────────────────────
+function _loadLocalSubmissions() {
+  try {
+    const raw = localStorage.getItem("rp_submissions");
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function _saveLocalSubmission(entry) {
+  try {
+    const arr = _loadLocalSubmissions();
+    arr.push(entry);
+    localStorage.setItem("rp_submissions", JSON.stringify(arr));
+  } catch (e) {
+    // ignore
+  }
+}
+
+function _normalizeEmail(email) {
+  return (email || "").trim().toLowerCase();
+}
+
+function _normalizePhone(phone) {
+  return (phone || "").replace(/\D/g, "");
+}
+
+
+// ─────────────────────────────────────────────
+// BLOCO DA ROLETA
+// ─────────────────────────────────────────────
+function WheelSection({ sectionRef }) {
+  const [showModal, setShowModal] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [result, setResult] = useState(null);
+  const [countdown, setCountdown] = useState(null);
+  const [canvasSize, setCanvasSize] = useState(getCanvasSize());
+
+  const intervalRef = useRef(null);
+
+  const { canvasRef, spinning, pickWinner, spin } = useSpinWheel(canvasSize);
+
+  useEffect(() => {
+    function onResize() {
+      setCanvasSize(getCanvasSize());
+    }
+
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  function startRedirectCountdown() {
+    let secs = 3;
+    setCountdown(secs);
+
+    intervalRef.current = setInterval(() => {
+      secs -= 1;
+
+      if (secs <= 0) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+
+        if (CONFIG.REDIRECT_URL && !CONFIG.REDIRECT_URL.includes("SEU-LINK-AQUI")) {
+          window.location.href = CONFIG.REDIRECT_URL;
+        }
+      } else {
+        setCountdown(secs);
+      }
+    }, 1000);
+  }
+
+  async function handleFormSubmit(formData) {
+    if (spinning) return;
+
+    // extra duplicate check server-side (localStorage) before proceeding
+    try {
+      const subs = _loadLocalSubmissions();
+      const emailNorm = _normalizeEmail(formData.email);
+      const phoneNorm = _normalizePhone(formData.telefone);
+      const nameKey = `${formData.nome.trim().toLowerCase()} ${formData.sobrenome.trim().toLowerCase()}`;
+
+      const foundName = subs.find((s) => (((s.nome || "") + " " + (s.sobrenome || "")).trim().toLowerCase() === nameKey));
+      const foundEmail = subs.find((s) => ( (s.email || "") === emailNorm ));
+      const foundPhone = subs.find((s) => ( (s.telefone || "") === phoneNorm ));
+
+      if (foundName || foundEmail || foundPhone) {
+        // keep modal open and notify user
+        setSending(false);
+        setShowModal(true);
+        const msgs = [];
+        if (foundName) msgs.push("Usuário já cadastrado");
+        if (foundEmail) msgs.push("E-mail já cadastrado");
+        if (foundPhone) msgs.push("Telefone já cadastrado");
+        window.alert(msgs.join(" - "));
+        return;
+      }
+    } catch (e) {
+      // ignore storage errors and proceed
+    }
+
+    setSending(true);
+
+    const winner = pickWinner();
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    setSending(false);
+    setShowModal(false);
+    setResult(null);
+    setCountdown(null);
+
+    sendToGoogleSheets(formData, winner.segment);
+
+    // save locally to prevent future duplicate registrations
+    try {
+      _saveLocalSubmission({
+        nome: formData.nome.trim(),
+        sobrenome: formData.sobrenome.trim(),
+        email: _normalizeEmail(formData.email),
+        telefone: _normalizePhone(formData.telefone),
+        premio: winner.segment.prize,
+        dataHora: new Date().toISOString(),
+      });
+    } catch (e) {
+      // ignore
+    }
+
+    spin(winner.index, () => {
+      setResult(winner.segment);
+      startRedirectCountdown();
+    });
+  }
+
+  return (
+    <section className="rp-wheel-section" ref={sectionRef}>
+      <h2 className="rp-wheel-section__heading">GIRE A ROLETA</h2>
+      <p className="rp-wheel-section__sub">Preencha o formulário e descubra seu prêmio</p>
+
+      
+
+      <div className="rp-wheel-wrap">
+        <div className="rp-wheel-pointer" />
+        <canvas
+          ref={canvasRef}
+          width={canvasSize}
+          height={canvasSize}
+          className="rp-wheel-canvas"
+        />
+      </div>
+
+      {result && (
+        <div className="rp-result">
+          <div className="rp-result__emoji">{result.emoji}</div>
+          <p className="rp-result__congrats">PARABÉNS! 🎉</p>
+          <p className="rp-result__prize">
+            Você ganhou: <span>{result.prize}</span>
+          </p>
+
+          {countdown !== null && (
+            <p className="rp-result__redirect">
+              Redirecionando em <strong>{countdown}s</strong>...
+            </p>
+          )}
         </div>
       )}
+
+      <button
+        className="rp-btn"
+        onClick={() => !spinning && !result && setShowModal(true)}
+        disabled={spinning || !!result}
+      >
+        {spinning ? "GIRANDO..." : result ? "GIRO FINALIZADO" : "CLIQUE E RODE AGORA →"}
+        <span className="rp-btn__sub">100% GRATUITO</span>
+      </button>
+
+      {showModal && (
+        <FormModal
+          onClose={() => !sending && setShowModal(false)}
+          onSubmit={handleFormSubmit}
+          sending={sending}
+        />
+      )}
+      
+      {/* Legal section inserted below the wheel */}
+      <div className="rp-legal-root">
+        <div className="rp-legal-divider" aria-hidden />
+
+        <div className="rp-legal-container">
+          <h4 className="rp-legal__title">AVISO LEGAL IMPORTANTE:</h4>
+          <ul className="rp-legal__list">
+            <li>- Apostas esportivas envolvem riscos financeiros. Nunca aposte mais do que pode perder.</li>
+            <li>- Resultados passados não garantem lucros futuros. Aposte com responsabilidade.</li>
+            <li>- Este site é destinado apenas para maiores de 18 anos.</li>
+            <li>- Jogue com responsabilidade. Se você tem problemas com jogos, procure ajuda.</li>
+          </ul>
+        </div>
+
+        <div className="rp-legal-copyright">© 2026 Luisa Mendes. Todos os direitos reservados.</div>
+      </div>
+    </section>
+  );
+}
+
+// ─────────────────────────────────────────────
+// PAGE
+// ─────────────────────────────────────────────
+export default function RoletaPage() {
+  const wheelSectionRef = useRef(null);
+
+  function scrollToWheel() {
+    wheelSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
+  return (
+    <div className="rp-root">
+      <Marquee />
+      <Hero onCtaClick={scrollToWheel} />
+      <SectionDivider />
+      <PrizesSection />
+      <WheelSection sectionRef={wheelSectionRef} />
     </div>
   );
 }
