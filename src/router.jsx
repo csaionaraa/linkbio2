@@ -4,7 +4,9 @@ import Entradas from "./Entradas";
 import Acesso from "./Acesso";
 import Gratuito from "./Gratuito";
 import Roleta from "./Roleta";
+import Roletapremiada from "./Roletapremiada";
 import Premio from "./Premio";
+import Premiacao from "./Premiacao";
 
 export function Router() {
   return (
@@ -14,6 +16,8 @@ export function Router() {
         <Route path="/acesso" element={<Acesso />} />
         <Route path="/gratuito" element={<Gratuito />} />
         <Route path="/roleta" element={<Roleta />} />
+        <Route path="/roletapremiada" element={<Roletapremiada />} />
+        <Route path="/premiacao" element={<Premiacao />} />
         <Route path="/premio" element={<Premio />} />
         <Route path="/" element={<App />} />
       </Routes>
