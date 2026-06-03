@@ -10,6 +10,11 @@ html, body, input, button, textarea, select, a {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Smooth scrolling for in-page navigation and programmatic scrolls */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   overflow-x: hidden;
 }
