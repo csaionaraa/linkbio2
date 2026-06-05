@@ -7,7 +7,7 @@ import Roleta from "./Roleta";
 import Roletapremiada from "./Roletapremiada";
 import Premio from "./Premio";
 import Premiacao from "./Premiacao";
-import Grupogratuito from "./Grupogratuito";
+import Tipdodia from "./Tipdodia";
 import Grupo from "./Grupo";
 
 export function Router() {
@@ -21,7 +21,7 @@ export function Router() {
         <Route path="/roletapremiada" element={<Roletapremiada />} />
         <Route path="/premiacao" element={<Premiacao />} />
         <Route path="/premio" element={<Premio />} />
-        <Route path="/grupogratuito" element={<Grupogratuito />} />
+        <Route path="/tipdodia" element={<Tipdodia />} />
         <Route path="/grupo" element={<Grupo />} />
         <Route path="/" element={<App />} />
       </Routes>

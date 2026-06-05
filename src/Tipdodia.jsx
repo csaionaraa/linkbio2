@@ -1,6 +1,6 @@
-import "./Grupogratuito.css";
+import "./Tipdodia.css";
 
-export default function Grupogratuito() {
+export default function Tipdodia() {
 	return (
 		<div
 			className="lp-root"
