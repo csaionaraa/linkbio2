@@ -12,7 +12,7 @@ export default function Grupo() {
 			<div className="lp-content">
 				<div className="lp-header">
 					<img src="/logo/logo.png" alt="Logo" className="lp-top-logo" />
-					<h3 className="lp-title">Faça parte da minha lista de espera abaixo:</h3>
+					<h3 className="lp-title">Faça parte do meu grupo gratuito no link abaixo:</h3>
 				</div>
 
 				<div className="lp-buttons">

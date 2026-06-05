@@ -12,7 +12,7 @@ export default function Tipdodia() {
 			<div className="lp-content">
 				<div className="lp-header">
 					<img src="/logo/logo.png" alt="Logo" className="lp-top-logo" />
-					<h3 className="lp-title">Faça parte da minha lista de espera abaixo:</h3>
+					<h3 className="lp-title">Pegue a oportunidade do dia no link abaixo:</h3>
 				</div>
 
 				<div className="lp-buttons">
