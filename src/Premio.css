@@ -253,11 +253,12 @@
 
 .btn-resgatar {
   margin-top: 35px;
-  width: 100%;
+  display: inline-block;
+  width: auto;
   border: none;
   cursor: pointer;
 
-  padding: 22px;
+  padding: 12px 28px;
   border-radius: 14px;
 
   font-size: 18px;
@@ -265,11 +266,7 @@
 
   color: #fff;
 
-  background: linear-gradient(
-    135deg,
-    #7b2fff,
-    #b366ff
-  );
+  background: linear-gradient(135deg, #7b2fff, #b366ff);
 
   box-shadow: 0 0 30px rgba(162, 89, 255, 0.45);
 
@@ -278,6 +275,14 @@
 
 .btn-resgatar:hover {
   transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .btn-resgatar {
+    display: block;
+    width: 100%;
+    padding: 18px;
+  }
 }
 
 .rodape {

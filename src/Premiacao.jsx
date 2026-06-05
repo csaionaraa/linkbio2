@@ -189,7 +189,12 @@ export default function Premiacao() {
             </div>
           </div>
 
-          <button className="btn-resgatar" href="https://mais.red/run/LuisaTrafegoRoleta">
+          <button
+            className="btn-resgatar"
+            onClick={() => {
+              window.location.href = "https://mais.red/run/LuisaTrafegoRoleta";
+            }}
+          >
             RESGATAR MEU PRÊMIO AGORA →
           </button>
 

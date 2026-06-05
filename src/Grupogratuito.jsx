@@ -16,7 +16,7 @@ export default function Grupogratuito() {
 				</div>
 
 				<div className="lp-buttons">
-					<a className="lp-btn" href="#" aria-label="Botão 1">
+					<a className="lp-btn" href="https://hi.switchy.io/TIPINSTALM01" aria-label="Botão 1">
 						<img src="/botao/Comp_2.png" alt="Comp 2" />
 					</a>
 
