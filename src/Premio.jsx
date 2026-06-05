@@ -194,7 +194,7 @@ export default function Premio() {
             </div>
           </div>
 
-          <button className="btn-resgatar">
+          <button className="btn-resgatar" href="https://mais.red/run/LuisaRoletaORG">
             RESGATAR MEU PRÊMIO AGORA →
           </button>
 

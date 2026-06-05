@@ -20,7 +20,7 @@ export default function Grupogratuito() {
 						<img src="/botao/Comp_2.png" alt="Comp 2" />
 					</a>
 
-					<a className="lp-btn" href="#" aria-label="Botão 2">
+					<a className="lp-btn" href="https://t.me/+HZ6p2AuuIoxjOGUx" aria-label="Botão 2">
 						<img src="/botao/Comp_1.png" alt="Comp 1" />
 					</a>
 				</div>
