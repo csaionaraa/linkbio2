@@ -18,12 +18,12 @@ const CONFIG = {
 // que este giro só libera Prata/Bronze.
 // ─────────────────────────────────────────────
 const SEGMENTS = [
-  { label: "OURO", color1: "#5b21b6", color2: "#a78bfa", prize: "Prêmio Ouro", emoji: "", selectable: false },
-  { label: "PRATA", color1: "#6d28d9", color2: "#c4b5fd", prize: "Prêmio Prata", emoji: "", selectable: true },
-  { label: "BRONZE", color1: "#7c3aed", color2: "#c4b5fd", prize: "Prêmio Bronze", emoji: "", selectable: true },
-  { label: "OURO", color1: "#5b21b6", color2: "#a78bfa", prize: "Prêmio Ouro", emoji: "", selectable: false },
-  { label: "PRATA", color1: "#6d28d9", color2: "#c4b5fd", prize: "Prêmio Prata", emoji: "", selectable: true },
-  { label: "BRONZE", color1: "#7c3aed", color2: "#c4b5fd", prize: "Prêmio Bronze", emoji: "", selectable: true },
+  { label: "OURO", icon: "/icons/coroa-ouroo.webp", color1: "#5b21b6", color2: "#a78bfa", prize: "Prêmio Ouro", emoji: "", selectable: false },
+  { label: "PRATA", icon: "/icons/medalha-prata.webp", color1: "#6d28d9", color2: "#c4b5fd", prize: "Prêmio Prata", emoji: "", selectable: true },
+  { label: "BRONZE", icon: "/icons/medalha-bronze.webp", color1: "#7c3aed", color2: "#c4b5fd", prize: "Prêmio Bronze", emoji: "", selectable: true },
+  { label: "OURO", icon: "/icons/coroa-ouroo.webp", color1: "#5b21b6", color2: "#a78bfa", prize: "Prêmio Ouro", emoji: "", selectable: false },
+  { label: "PRATA", icon: "/icons/medalha-prata.webp", color1: "#6d28d9", color2: "#c4b5fd", prize: "Prêmio Prata", emoji: "", selectable: true },
+  { label: "BRONZE", icon: "/icons/medalha-bronze.webp", color1: "#7c3aed", color2: "#c4b5fd", prize: "Prêmio Bronze", emoji: "", selectable: true },
 ];
 
 const NUM_SEG = SEGMENTS.length;
@@ -344,6 +344,27 @@ function useSpinWheel(canvasSize) {
   const rotationRef = useRef(0);
   const animationRef = useRef(null);
   const [spinning, setSpinning] = useState(false);
+  const imagesRef = useRef({});
+
+  useEffect(() => {
+    // preload segment icons
+    SEGMENTS.forEach((seg) => {
+      if (!seg.icon) return;
+      const img = new Image();
+      img.src = seg.icon;
+      img.onload = () => {
+        imagesRef.current[seg.label] = img;
+        try {
+          drawWheel(rotationRef.current);
+        } catch (e) {
+          // ignore
+        }
+      };
+      img.onerror = () => {
+        // ignore load errors; fallback to text will be used
+      };
+    });
+  }, []);
 
   function drawWheel(rotation = rotationRef.current) {
     const canvas = canvasRef.current;
@@ -399,17 +420,29 @@ function useSpinWheel(canvasSize) {
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // texto
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(start + SEG_ANGLE / 2);
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#ffffff";
-      ctx.font = `700 ${size < 340 ? 12 : 14}px Arial`;
-      ctx.shadowColor = "rgba(0,0,0,0.45)";
-      ctx.shadowBlur = 4;
-      ctx.fillText(seg.label, r - 18, -2);
-      ctx.restore();
+      // ícone (fallback para texto se imagem não carregada)
+      const midAngle = start + SEG_ANGLE / 2;
+      const img = imagesRef.current[seg.label];
+      const imgSize = size < 340 ? 18 : 24;
+      const imgX = cx + Math.cos(midAngle) * (r - 30);
+      const imgY = cy + Math.sin(midAngle) * (r - 30);
+
+      if (img && img.complete) {
+        ctx.save();
+        ctx.drawImage(img, imgX - imgSize / 2, imgY - imgSize / 2, imgSize, imgSize);
+        ctx.restore();
+      } else {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(midAngle);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `700 ${size < 340 ? 12 : 14}px Arial`;
+        ctx.shadowColor = "rgba(0,0,0,0.45)";
+        ctx.shadowBlur = 4;
+        ctx.fillText(seg.label, r - 18, -2);
+        ctx.restore();
+      }
     }
 
     // centro
