@@ -37,7 +37,7 @@ const PRIZE_TIERS = [
     icon: "/icons/coroa-ouroo.webp",
     title: "PRÊMIOS OURO",
     items: [
-      { icon: "/icons/ticket-ouro.webp", text: "Banca de R$10.000,00" },
+      { icon: "/icons/ticket-ouro.webp", text: "Banca de R$15.000,00" },
       { icon: "/icons/presente-ouro.webp", text: "Acesso VIP à TODOS os meus Grupos" },
       { icon: "/icons/coroa-ouro.webp", text: "Assistir um Jogo no Estádio" },
     ],
