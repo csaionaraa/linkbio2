@@ -17,7 +17,7 @@ function App() {
     {
       id: 3,
       image: "/buttons/superodds.png",
-      link: "https://t.me/+iLeaWkINLhxjZjAx"
+      link: "https://t.me/+od5FBJEJl0U0MDUx"
     },
     {
       id: 4,
