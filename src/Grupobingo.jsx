@@ -1,6 +1,9 @@
+import { useState } from "react";
 import "./Grupobingo.css";
 
 export default function Grupo() {
+	const [showPopup, setShowPopup] = useState(false);
+
 	return (
 		<div
 			className="lp-root"
@@ -16,15 +19,38 @@ export default function Grupo() {
 				</div>
 
 				<div className="lp-buttons">
-					<a className="lp-btn" href="https://hi.switchy.io/bingogratisLP01LM" aria-label="Botão 1">
+					<div className="lp-btn" aria-label="Botão 1">
 						<img src="/botao/Comp_4.png" alt="Comp 2" />
-					</a>
+					</div>
+
+					<button type="button" className="lp-resgate-btn" onClick={() => setShowPopup(true)}>
+						CLIQUE AQUI PARA RESGATAR
+					</button>
 				</div>
 
 				<div className="lp-term">
 					<img src="/botao/termoverde.png" alt="Termos e Condições" />
 				</div>
 			</div>
+
+			{showPopup && (
+				<div className="lp-popup-overlay" role="dialog" aria-modal="true" onClick={() => setShowPopup(false)}>
+					<div className="lp-popup" onClick={(event) => event.stopPropagation()}>
+						<p className="lp-popup-title">Seu resgate está pronto!</p>
+						<a
+							className="lp-popup-action"
+							href="https://hi.switchy.io/bingogratisLP01LM"
+							target="_blank"
+							rel="noreferrer"
+						>
+							Resgate aqui
+						</a>
+						<button type="button" className="lp-popup-close" onClick={() => setShowPopup(false)}>
+							Fechar
+						</button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
