@@ -39,7 +39,7 @@ export default function Grupo() {
 						<p className="lp-popup-title">Seu resgate está pronto!</p>
 						<a
 							className="lp-popup-action"
-							href="https://hi.switchy.io/bingogratisLP01LM"
+							href="https://telegram.me/+CunAnpIDSdBmN2Rh"
 							target="_blank"
 							rel="noreferrer"
 						>

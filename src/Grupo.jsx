@@ -39,7 +39,7 @@ export default function Grupo() {
 						<p className="lp-popup-title">Seu resgate está pronto!</p>
 						<a
 							className="lp-popup-action"
-							href="https://t.me/+HZ6p2AuuIoxjOGUx"
+							href="https://telegram.me/+HZ6p2AuuIoxjOGUx"
 							target="_blank"
 							rel="noreferrer"
 						>

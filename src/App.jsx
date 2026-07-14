@@ -6,7 +6,7 @@ function App() {
     {
       id: 1,
       image: "/buttons/grupofree.png",
-      link: "https://t.me/+LznpxBiUUGhkYWRh"
+      link: "https://telegram.me/+LznpxBiUUGhkYWRh"
     },
     {
       id: 2,
@@ -17,12 +17,12 @@ function App() {
     {
       id: 3,
       image: "/buttons/superodds.png",
-      link: "https://t.me/+od5FBJEJl0U0MDUx"
+      link: "https://telegram.me/+od5FBJEJl0U0MDUx"
     },
     {
       id: 4,
       image: "/buttons/nbafree.png",
-      link: "https://t.me/+kcU-0wV41cNlYzJh"
+      link: "https://telegram.me/+kcU-0wV41cNlYzJh"
     },
     {
       id: 5,
