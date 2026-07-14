@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./Grupobingo.css";
 
 const TELEGRAM_LINK = "https://telegram.me/+pMilA7WpirVjYmYx";
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwUzakv-U_ZiM5kpHyhSkzHutChgkzf0gDCfbai_yiZavQcuGThAiKsK1yNYPhCq_rY/exec";
+const DUPLICATE_STORAGE_KEY = "grupo_alavancagem_whatsapp";
 
 export default function Grupoalavancagem() {
   const [showPopup, setShowPopup] = useState(false);
@@ -21,17 +22,39 @@ export default function Grupoalavancagem() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
+    if (name === "whatsapp") {
+      const digitsOnly = value.replace(/\D/g, "").slice(0, 11);
+      setFormData((prev) => ({ ...prev, whatsapp: digitsOnly }));
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const whatsappDigits = useMemo(() => formData.whatsapp.replace(/\D/g, ""), [formData.whatsapp]);
+  const isWhatsappValid = whatsappDigits.length >= 10 && whatsappDigits.length <= 11;
+  const isFormValid = formData.nome.trim().length > 0 && isWhatsappValid;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const nome = formData.nome.trim();
-    const whatsapp = formData.whatsapp.trim();
+    const whatsapp = whatsappDigits;
 
-    if (!nome || !whatsapp) {
-      setFeedback("Preencha seu nome e WhatsApp para liberar o acesso.");
+    if (!nome) {
+      setFeedback("Informe seu nome para liberar o acesso.");
+      return;
+    }
+
+    if (!isWhatsappValid) {
+      setFeedback("O WhatsApp precisa ter entre 10 e 11 números.");
+      return;
+    }
+
+    const storedNumbers = JSON.parse(localStorage.getItem(DUPLICATE_STORAGE_KEY) || "[]");
+    if (storedNumbers.includes(whatsapp)) {
+      setFeedback("Este WhatsApp já foi cadastrado.");
       return;
     }
 
@@ -45,19 +68,35 @@ export default function Grupoalavancagem() {
       payload.append("origem", "grupo_alavancagem");
       payload.append("timestamp", new Date().toISOString());
 
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-        },
-        body: payload.toString(),
-      });
+      let submissionSucceeded = false;
+
+      if (typeof navigator !== "undefined" && typeof navigator.sendBeacon === "function") {
+        const blob = new Blob([payload.toString()], {
+          type: "application/x-www-form-urlencoded;charset=UTF-8",
+        });
+        submissionSucceeded = navigator.sendBeacon(GOOGLE_SCRIPT_URL, blob);
+      }
+
+      if (!submissionSucceeded) {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: payload,
+        });
+        submissionSucceeded = response.type === "opaque";
+      }
+
+      if (!submissionSucceeded) {
+        throw new Error("Não foi possível enviar os dados. Tente novamente.");
+      }
+
+      const updatedNumbers = [...storedNumbers, whatsapp];
+      localStorage.setItem(DUPLICATE_STORAGE_KEY, JSON.stringify(updatedNumbers));
 
       setStep("success");
       setFeedback("Seu acesso foi liberado.");
     } catch (error) {
-      setFeedback("Não foi possível enviar os dados. Tente novamente.");
+      setFeedback(error.message || "Não foi possível enviar os dados. Tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
@@ -130,7 +169,7 @@ export default function Grupoalavancagem() {
                     />
                   </label>
 
-                  <button type="submit" className="lp-submit-btn" disabled={isSubmitting}>
+                  <button type="submit" className="lp-submit-btn" disabled={isSubmitting || !isFormValid}>
                     {isSubmitting ? "ENVIANDO..." : "LIBERAR ACESSO"}
                   </button>
                 </form>
