@@ -113,10 +113,71 @@
 }
 
 .lp-popup-title {
-  margin: 0 0 16px;
+  margin: 0 0 8px;
   color: #1f2733;
   font-size: 18px;
   font-weight: 700;
+}
+
+.lp-popup-subtitle {
+  margin: 0 0 14px;
+  color: #5f6b7a;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.lp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.lp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  color: #1f2733;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lp-input {
+  border: 1px solid #d7dde4;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #1f2733;
+  outline: none;
+}
+
+.lp-input:focus {
+  border-color: #2f7d32;
+  box-shadow: 0 0 0 3px rgba(47, 125, 50, 0.12);
+}
+
+.lp-submit-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, #24ff6b 0%, #00c853 100%);
+  color: #000000;
+  margin-top: 4px;
+}
+
+.lp-submit-btn:disabled {
+  opacity: 0.75;
+  cursor: wait;
+}
+
+.lp-feedback {
+  margin: 8px 0 10px;
+  color: #2f7d32;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .lp-popup-action,

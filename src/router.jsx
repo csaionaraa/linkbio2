@@ -10,6 +10,7 @@ import Premiacao from "./Premiacao";
 import Tipdodia from "./Tipdodia";
 import Grupo from "./Grupo";
 import Grupobingo from "./Grupobingo";
+import Grupoalavancagem from "./Grupoalavancagem";
 
 export function Router() {
   return (
@@ -25,6 +26,7 @@ export function Router() {
         <Route path="/tipdodia" element={<Tipdodia />} />
         <Route path="/grupo" element={<Grupo />} />
         <Route path="/grupobingo" element={<Grupobingo />} />
+        <Route path="/grupoalavancagem" element={<Grupoalavancagem />} />
         <Route path="/" element={<App />} />
       </Routes>
     </BrowserRouter>
