@@ -2,8 +2,7 @@ import { useMemo, useState } from "react";
 import "./Grupobingo.css";
 
 const TELEGRAM_LINK = "https://telegram.me/+pMilA7WpirVjYmYx";
-const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwUzakv-U_ZiM5kpHyhSkzHutChgkzf0gDCfbai_yiZavQcuGThAiKsK1yNYPhCq_rY/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxExOI0Cc6Q9mKzmK09E8ApJB7MQM87Jrp6klJccR0zeCLcHdAryDlONLYV5VQqx-5y/exec";
 const DUPLICATE_STORAGE_KEY = "grupo_alavancagem_whatsapp";
 
 export default function Grupoalavancagem() {
@@ -65,29 +64,31 @@ export default function Grupoalavancagem() {
       const payload = new URLSearchParams();
       payload.append("nome", nome);
       payload.append("whatsapp", whatsapp);
-      payload.append("origem", "grupo_alavancagem");
-      payload.append("timestamp", new Date().toISOString());
 
-      let submissionSucceeded = false;
+      console.log("Enviando para:", GOOGLE_SCRIPT_URL);
+      console.log("Dados:", { nome, whatsapp });
 
-      if (typeof navigator !== "undefined" && typeof navigator.sendBeacon === "function") {
-        const blob = new Blob([payload.toString()], {
-          type: "application/x-www-form-urlencoded;charset=UTF-8",
-        });
-        submissionSucceeded = navigator.sendBeacon(GOOGLE_SCRIPT_URL, blob);
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        body: payload,
+      });
+
+      console.log("Resposta status:", response.status);
+
+      const responseText = await response.text();
+      console.log("Resposta texto:", responseText);
+
+      let result = null;
+
+      try {
+        result = JSON.parse(responseText);
+      } catch (e) {
+        console.log("Erro ao parsear JSON:", e);
+        result = null;
       }
 
-      if (!submissionSucceeded) {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          body: payload,
-        });
-        submissionSucceeded = response.type === "opaque";
-      }
-
-      if (!submissionSucceeded) {
-        throw new Error("Não foi possível enviar os dados. Tente novamente.");
+      if (!result || result?.ok !== true) {
+        throw new Error(result?.error || "Erro ao salvar os dados na planilha.");
       }
 
       const updatedNumbers = [...storedNumbers, whatsapp];
@@ -96,6 +97,7 @@ export default function Grupoalavancagem() {
       setStep("success");
       setFeedback("Seu acesso foi liberado.");
     } catch (error) {
+      console.error("Erro completo:", error);
       setFeedback(error.message || "Não foi possível enviar os dados. Tente novamente.");
     } finally {
       setIsSubmitting(false);
@@ -113,7 +115,7 @@ export default function Grupoalavancagem() {
       <div className="lp-content">
         <div className="lp-header">
           <img src="/logo/logo.png" alt="Logo" className="lp-top-logo" />
-          <h3 className="lp-title">Parabéns ganhou acesso ao grupo de Alavancagem</h3>
+          <h3 className="lp-title">Parabéns você ganhou acesso ao grupo de Alavancagem!</h3>
         </div>
 
         <div className="lp-buttons">
