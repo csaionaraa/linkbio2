@@ -129,7 +129,7 @@ export default function Grupoalavancagem() {
         </div>
 
         <div className="lp-term">
-          <img src="/botao/termoverde.png" alt="Termos e Condições" />
+          <img src="/botao/termogenerico.png" alt="Termos e Condições" />
         </div>
       </div>
 
