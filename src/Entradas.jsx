@@ -25,7 +25,7 @@ function Entradas() {
           </button>
 
           <img
-            src="/buttons/termos.png"
+            src="/botao/termogenerico.png"
             alt="Jogue com responsabilidade"
             className="grupo-termo"
           />
