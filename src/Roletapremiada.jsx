@@ -118,6 +118,7 @@ function Hero({ onCtaClick }) {
           CLIQUE E RODE AGORA →
           <span className="rp-btn__sub">100% GRATUITO</span>
         </button>
+        <img src="/termo/imagemtermo0.png" alt="Termo" className="rp-termo-image" />
       </div>
     </section>
   );

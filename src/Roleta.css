@@ -173,6 +173,21 @@ input {
   opacity: 0.88;
 }
 
+.rp-termo-image {
+  margin: 24px auto 0;
+  max-width: 52%;
+  width: clamp(280px, 90vw, 520px);
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+@media (min-width: 768px) {
+  .rp-termo-image {
+    margin-left: 0;
+    margin-right: auto;
+    width: clamp(320px, 40vw, 480px);
+  }
+}
 /* ─────────────────────────────────────────────
    PRÊMIOS
 ───────────────────────────────────────────── */

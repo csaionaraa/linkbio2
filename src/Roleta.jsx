@@ -37,9 +37,9 @@ const PRIZE_TIERS = [
     icon: "/icons/coroa-ouroo.webp",
     title: "PRÊMIOS OURO",
     items: [
-      { icon: "/icons/ticket-ouro.webp", text: "Banca de R$15.000,00" },
+      { icon: "/icons/ticket-ouro.webp", text: "Assistir um jogo da Champions League" },
       { icon: "/icons/presente-ouro.webp", text: "Acesso VIP à TODOS os meus Grupos" },
-      { icon: "/icons/coroa-ouro.webp", text: "Assistir um Jogo no Estádio" },
+      { icon: "/icons/ticket-ouro.webp", text: "Assistir um Jogo no Estádio" },
     ],
   },
   {
@@ -48,9 +48,9 @@ const PRIZE_TIERS = [
     icon: "/icons/medalha-prata.webp",
     title: "PRÊMIOS PRATA",
     items: [
-      { icon: "/icons/presente-prata.webp", text: "Acesso VITALÍCIO ao meu Principal Grupo + R$50 de Banca" },
-      { icon: "/icons/coroa-prata.webp", text: "Banca de R$500" },
-      { icon: "/icons/ticket-prata.webp", text: "Camisa Oficial do seu Clube do Coração" },
+      { icon: "/icons/presente-prata.webp", text: "Conhecer meu grupo VIP + VIP Odds Altas por 7 dias" },
+      { icon: "/icons/ticket-prata.webp", text: "Assistir seu time de coração no Estádio" },
+      { icon: "/icons/coroa-prata.webp", text: "Camisa Oficial do seu Clube do Coração" },
     ],
   },
   {
@@ -59,9 +59,9 @@ const PRIZE_TIERS = [
     icon: "/icons/medalha-bronze.webp",
     title: "PRÊMIOS BRONZE",
     items: [
-      { icon: "/icons/presente-bronze2.webp", text: "30 Dias de Acesso Gratuito ao Grupo VIP" },
-      { icon: "/icons/presente-bronze2.webp", text: "7 Dias de Acesso ao VIP + Banca de R$50" },
-      { icon: "/icons/coroa-bronze2.webp", text: "Banca de R$35" },
+      { icon: "/icons/presente-bronze2.webp", text: "Acesso ao meu Grupo VIP por 7 dias" },
+      { icon: "/icons/presente-bronze2.webp", text: "Acesso ao meu Grupo VIP Odds Altas por 7 dias" },
+      { icon: "/icons/coroa-bronze2.webp", text: "Acesso ao meu Grupo de Placares" },
     ],
   },
 ];
@@ -118,6 +118,7 @@ function Hero({ onCtaClick }) {
           CLIQUE E RODE AGORA →
           <span className="rp-btn__sub">100% GRATUITO</span>
         </button>
+        <img src="/termo/imagemtermo0.png" alt="Termo" className="rp-termo-image" />
       </div>
     </section>
   );

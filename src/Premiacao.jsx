@@ -141,17 +141,13 @@ export default function Premiacao() {
 
           <div className="ganhou-box">
             <div className="premio-topo">
-              VOCÊ GANHOU UMA BANCA DE R$50
+              VOCÊ GANHOU ACESSO AOS MEUS GRUPOS VIP E VIP ODDS ALTA POR 7 DIAS
             </div>
 
             <div className="premio-conteudo">
               <div className="trofeu">🏆</div>
 
               <h2>+ ACESSO VITALÍCIO AO MEU GRUPO</h2>
-
-              <p>
-                Acesso exclusivo às análises premium de Luisa Mendes
-              </p>
             </div>
           </div>
 
