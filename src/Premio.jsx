@@ -146,7 +146,7 @@ export default function Premio() {
 
           <div className="ganhou-box">
             <div className="premio-topo">
-              VOCÊ GANHOU UMA BANCA DE R$50
+              VOCÊ GANHOU ACESSO AO MEUS GRUPOS VIP E VIP ODDS ALTA POR 7 DIAS
             </div>
 
             <div className="premio-conteudo">
