@@ -5,9 +5,9 @@ import "./Roleta.css";
 // CONFIG
 // ─────────────────────────────────────────────
 const CONFIG = {
-  REDIRECT_URL: "https://luisamendestips.com.br/premio",
-  REDIRECT_URL_PRATA: "https://luisamendestips.com.br/premio",
-  REDIRECT_URL_BRONZE: "https://luisamendestips.com.br/premios",
+  REDIRECT_URL: "/premio",
+  REDIRECT_URL_PRATA: "/premio",
+  REDIRECT_URL_BRONZE: "/premios",
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw6IJXOfhS93mWjtsxopSjZ3sB19Un671BMA3UCYZwnaAnFDD8rtSo6SxxlpfBPpsk5Ng/exec",
 
   HERO_BG_DESKTOP: "/imgs/roleta-desktop.png",
@@ -636,10 +636,13 @@ function WheelSection({ sectionRef }) {
     let secs = 3;
     setCountdown(secs);
 
+    const label = winnerSegment?.label;
     const redirectUrl =
-      winnerSegment?.label === "BRONZE"
-        ? CONFIG.REDIRECT_URL_BRONZE
-        : CONFIG.REDIRECT_URL_PRATA;
+      label === "BRONZE"
+        ? CONFIG.REDIRECT_URL_BRONZE // BRONZE -> /premios
+        : label === "PRATA"
+        ? CONFIG.REDIRECT_URL_PRATA // PRATA -> /premio
+        : CONFIG.REDIRECT_URL;
 
     intervalRef.current = setInterval(() => {
       secs -= 1;
