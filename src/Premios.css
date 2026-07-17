@@ -1,0 +1,327 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.premios-page {
+  min-height: 100vh;
+  background: #060606;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px;
+  font-family: Inter, sans-serif;
+}
+
+.premios-container {
+  width: 100%;
+  max-width: 650px;
+}
+
+/* TIMER */
+
+.premios-timer-box {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.premios-timer-card {
+  width: 90px;
+  height: 90px;
+  background: #171717;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(162, 89, 255, 0.15);
+}
+
+.premios-timer-card span {
+  font-size: 42px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.premios-timer-card small {
+  color: #cfcfcf;
+  font-size: 12px;
+}
+
+.premios-progress-bar {
+  width: 100%;
+  height: 10px;
+  border-radius: 100px;
+  background: #151515;
+  overflow: hidden;
+}
+
+.premios-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #7b2fff,
+    #9c4dff,
+    #bb86fc
+  );
+}
+
+.premios-urgencia {
+  text-align: center;
+  color: #bb86fc;
+  font-weight: 700;
+  margin: 15px 0 40px;
+}
+
+/* CARD PRINCIPAL */
+
+.premios-card {
+  text-align: center;
+}
+
+.premios-trofeu-circle {
+  width: 70px;
+  height: 70px;
+  margin: auto;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    #7b2fff,
+    #b366ff
+  );
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 34px;
+
+  box-shadow: 0 0 25px rgba(162, 89, 255, 0.45);
+}
+
+.premios-card h1 {
+  margin-top: 25px;
+  font-size: 38px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.premios-subtitulo {
+  margin-top: 15px;
+  color: #d3d3d3;
+}
+
+.premios-subtitulo span {
+  color: #bb86fc;
+  font-weight: 700;
+}
+
+/* GANHOU */
+
+.premios-ganhou-box {
+  margin-top: 35px;
+  border: 1px solid rgba(187, 134, 252, 0.35);
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(123, 47, 255, 0.1),
+    rgba(123, 47, 255, 0.03)
+  );
+}
+
+.premios-topo {
+  margin: 14px;
+  border-radius: 12px;
+  padding: 18px;
+  font-size: 28px;
+  font-weight: 900;
+  animation: premiosFadePiscar 4s infinite ease-in-out;
+  background: linear-gradient(
+    135deg,
+    #7b2fff,
+    #b366ff
+  );
+}
+
+@keyframes premiosFadePiscar {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.premios-conteudo {
+  padding: 30px;
+}
+
+.premios-trofeu {
+  font-size: 45px;
+}
+
+.premios-conteudo h2 {
+  margin-top: 10px;
+  color: #bb86fc;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.premios-conteudo p {
+  color: #d0d0d0;
+  margin-top: 10px;
+}
+
+/* TICKET */
+
+.premios-ticket-area {
+  margin-top: 35px;
+}
+
+.premios-ticket-area span {
+  color: #cfcfcf;
+}
+
+.premios-ticket {
+  margin: 15px auto 0;
+  width: fit-content;
+  min-width: 130px;
+  padding: 15px 30px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(187, 134, 252, 0.4);
+
+  background: rgba(123, 47, 255, 0.08);
+
+  color: #bb86fc;
+  font-weight: 800;
+  font-size: 28px;
+}
+
+/* BENEFICIOS */
+
+.premios-beneficios {
+  margin-top: 40px;
+  padding: 25px;
+  border-radius: 20px;
+
+  border: 1px solid rgba(187, 134, 252, 0.2);
+
+  background: rgba(123, 47, 255, 0.04);
+}
+
+.premios-beneficios h3 {
+  margin-bottom: 25px;
+  color: #d7c1ff;
+  letter-spacing: 1px;
+}
+
+.premios-beneficios-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.premios-beneficio {
+  background: rgba(123, 47, 255, 0.08);
+  border: 1px solid rgba(187, 134, 252, 0.12);
+  border-radius: 16px;
+  padding: 18px;
+  text-align: left;
+}
+
+.premios-beneficio span {
+  font-size: 22px;
+}
+
+.premios-beneficio p {
+  margin-top: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* BOTÃO */
+
+.premios-btn-resgatar {
+  margin-top: 35px;
+  display: inline-block;
+  width: auto;
+  border: none;
+  cursor: pointer;
+
+  padding: 12px 28px;
+  border-radius: 14px;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  color: #fff;
+
+  background: linear-gradient(135deg, #7b2fff, #b366ff);
+
+  box-shadow: 0 0 30px rgba(162, 89, 255, 0.45);
+
+  transition: 0.3s;
+}
+
+.premios-btn-resgatar:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .premios-btn-resgatar {
+    display: block;
+    width: 100%;
+    padding: 18px;
+  }
+}
+
+.premios-rodape {
+  margin-top: 15px;
+  color: #9c9c9c;
+  font-size: 12px;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+  .premios-card h1 {
+    font-size: 28px;
+  }
+
+  .premios-topo {
+    font-size: 20px;
+  }
+
+  .premios-conteudo h2 {
+    font-size: 22px;
+  }
+
+  .premios-beneficios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .premios-ticket {
+    font-size: 22px;
+  }
+}
+
+/* confetti canvas (fixed overlay, doesn't block clicks) */
+.premios-confetti-canvas {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}

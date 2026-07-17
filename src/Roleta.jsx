@@ -6,6 +6,8 @@ import "./Roleta.css";
 // ─────────────────────────────────────────────
 const CONFIG = {
   REDIRECT_URL: "https://luisamendestips.com.br/premio",
+  REDIRECT_URL_PRATA: "https://luisamendestips.com.br/premio",
+  REDIRECT_URL_BRONZE: "https://luisamendestips.com.br/premios",
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw6IJXOfhS93mWjtsxopSjZ3sB19Un671BMA3UCYZwnaAnFDD8rtSo6SxxlpfBPpsk5Ng/exec",
 
   HERO_BG_DESKTOP: "/imgs/roleta-desktop.png",
@@ -480,7 +482,7 @@ function useSpinWheel(canvasSize) {
   }, []);
 
   function pickWinner() {
-    const targetLabel = Math.random() < 0.5 ? "PRATA" : "BRONZE";
+    const targetLabel = Math.random() < 0.9 ? "BRONZE" : "PRATA";
 
     const pool = SEGMENTS.map((segment, index) => ({ segment, index })).filter(
       ({ segment }) => segment.selectable && segment.label === targetLabel
@@ -630,9 +632,14 @@ function WheelSection({ sectionRef }) {
     };
   }, []);
 
-  function startRedirectCountdown() {
+  function startRedirectCountdown(winnerSegment) {
     let secs = 3;
     setCountdown(secs);
+
+    const redirectUrl =
+      winnerSegment?.label === "BRONZE"
+        ? CONFIG.REDIRECT_URL_BRONZE
+        : CONFIG.REDIRECT_URL_PRATA;
 
     intervalRef.current = setInterval(() => {
       secs -= 1;
@@ -641,8 +648,8 @@ function WheelSection({ sectionRef }) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
 
-        if (CONFIG.REDIRECT_URL && !CONFIG.REDIRECT_URL.includes("SEU-LINK-AQUI")) {
-          window.location.href = CONFIG.REDIRECT_URL;
+        if (redirectUrl && !redirectUrl.includes("SEU-LINK-AQUI")) {
+          window.location.href = redirectUrl;
         }
       } else {
         setCountdown(secs);
@@ -708,7 +715,7 @@ function WheelSection({ sectionRef }) {
 
     spin(winner.index, () => {
       setResult(winner.segment);
-      startRedirectCountdown();
+      startRedirectCountdown(winner.segment);
     });
   }
 

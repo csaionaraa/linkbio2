@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./Premio.css";
+import "./Premios.css";
 
-export default function Premio() {
+export default function Premios() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function Premio() {
 
   // Persistent 5-minute timer
   const TOTAL_MS = 5 * 60 * 1000;
-  const STORAGE_KEY = "rp_premio_end";
+  const STORAGE_KEY = "rp_premios_end";
   const [now, setNow] = useState(Date.now());
 
   // ticket state (changes every 15s)
@@ -108,86 +108,86 @@ export default function Premio() {
   const secs = String(Math.floor((remaining % 60000) / 1000)).padStart(2, "0");
 
   return (
-    <div className="premio-page">
-      <canvas ref={canvasRef} className="confetti-canvas" />
-      <div className="premio-container">
+    <div className="premios-page">
+      <canvas ref={canvasRef} className="premios-confetti-canvas" />
+      <div className="premios-container">
 
         {/* TIMER */}
-        <div className="timer-box">
-          <div className="timer-card">
+        <div className="premios-timer-box">
+          <div className="premios-timer-card">
             <span>{mins}</span>
             <small>Minutos</small>
           </div>
 
-          <div className="timer-card">
+          <div className="premios-timer-card">
             <span>{secs}</span>
             <small>Segundos</small>
           </div>
         </div>
 
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+        <div className="premios-progress-bar">
+          <div className="premios-progress-fill" style={{ width: `${progress}%` }}></div>
         </div>
 
-        <p className="urgencia">
+        <p className="premios-urgencia">
           🔥 ÚLTIMOS MINUTOS! Resgate agora!
         </p>
 
         {/* PREMIO */}
-        <section className="premio-card">
-          <div className="trofeu-circle">🏆</div>
+        <section className="premios-card">
+          <div className="premios-trofeu-circle">🏆</div>
 
           <h1>SEU PRÊMIO FOI DESBLOQUEADO</h1>
 
-          <p className="subtitulo">
+          <p className="premios-subtitulo">
             Clique no botão abaixo para resgatar seu
             <span> acesso gratuito</span>
           </p>
 
-          <div className="ganhou-box">
-            <div className="premio-topo">
+          <div className="premios-ganhou-box">
+            <div className="premios-topo">
               VOCÊ GANHOU UMA BANCA DE R$50
             </div>
 
-            <div className="premio-conteudo">
-              <div className="trofeu">🏆</div>
+            <div className="premios-conteudo">
+              <div className="premios-trofeu">🏆</div>
 
               <h2>+ ACESSO VITALÍCIO AO MEU GRUPO</h2>
 
               <p>
-                Acesso ao meuGrupo VIP + VIP Odds Altas por 7 dias
+                Acesso ao meu Grupo VIP por 7 dias
               </p>
             </div>
           </div>
 
-          <div className="ticket-area">
+          <div className="premios-ticket-area">
             <span>Seu ticket da sorte:</span>
 
-            <div className="ticket">
+            <div className="premios-ticket">
               #51865
             </div>
           </div>
 
-          <div className="beneficios">
+          <div className="premios-beneficios">
             <h3>🎁 O QUE VOCÊ GANHA NO GRUPO VIP</h3>
 
-            <div className="beneficios-grid">
-              <div className="beneficio">
+            <div className="premios-beneficios-grid">
+              <div className="premios-beneficio">
                 <span>📈</span>
                 <p>Análises diárias pré-jogo e live</p>
               </div>
 
-              <div className="beneficio">
+              <div className="premios-beneficio">
                 <span>⚡</span>
                 <p>Tips ao vivo durante os jogos</p>
               </div>
 
-              <div className="beneficio">
+              <div className="premios-beneficio">
                 <span>⭐</span>
                 <p>Insights exclusivos de Luisa Mendes</p>
               </div>
 
-              <div className="beneficio">
+              <div className="premios-beneficio">
                 <span>📊</span>
                 <p>Estatísticas de performance</p>
               </div>
@@ -195,7 +195,7 @@ export default function Premio() {
           </div>
 
           <button
-            className="btn-resgatar"
+            className="premios-btn-resgatar"
             onClick={() => {
               window.location.href = "https://mais.red/run/LuisaRoletaORG";
             }}
@@ -203,7 +203,7 @@ export default function Premio() {
             RESGATAR MEU PRÊMIO AGORA →
           </button>
 
-          <p className="rodape">
+          <p className="premios-rodape">
             * Ao clicar no botão, você será redirecionado para resgatar seu prêmio.
           </p>
         </section>
