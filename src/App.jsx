@@ -26,7 +26,7 @@ function App() {
     },
     {
       id: 5,
-      image: "/buttons/alavancagem.png",
+      image: "/buttons/projetox.png",
       link: "https://mais.red/run/LuisaInstaAlavancagem"
     },
     {
