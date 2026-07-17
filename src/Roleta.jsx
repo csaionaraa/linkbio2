@@ -773,6 +773,7 @@ function WheelSection({ sectionRef }) {
             <li>- Resultados passados não garantem lucros futuros. Aposte com responsabilidade.</li>
             <li>- Este site é destinado apenas para maiores de 18 anos.</li>
             <li>- Jogue com responsabilidade. Se você tem problemas com jogos, procure ajuda.</li>
+            <li>- Ministério da Fazenda adverte: Aposta não é investimento</li>
           </ul>
         </div>
 
