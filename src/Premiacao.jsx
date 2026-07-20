@@ -147,7 +147,7 @@ export default function Premiacao() {
             <div className="premio-conteudo">
               <div className="trofeu">🏆</div>
 
-              <h2>+ ACESSO VITALÍCIO AO MEU GRUPO</h2>
+              <h2>COMUNIDADE EXCLUSIVA DO WHATSAPP</h2>
             </div>
           </div>
 

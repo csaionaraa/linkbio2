@@ -16,7 +16,7 @@ import Grupoalavancagem from "./Grupoalavancagem";
 
 export function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter> 
       <Routes>
         <Route path="/entradas" element={<Entradas />} />
         <Route path="/acesso" element={<Acesso />} />

@@ -152,7 +152,7 @@ export default function Premios() {
             <div className="premios-conteudo">
               <div className="premios-trofeu">🏆</div>
 
-              <h2>+ ACESSO VITALÍCIO AO MEU GRUPO</h2>
+              <h2>COMUNIDADE EXCLUSIVA DO WHATSAPP</h2>
 
               <p>
                 Acesso ao meu Grupo VIP por 7 dias
