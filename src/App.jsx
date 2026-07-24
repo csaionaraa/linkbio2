@@ -1,28 +1,10 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-const AGE_KEY = 'mgAgeVerified'
-const AGE_BLOCK = 'mgAgeBlocked'
-
-function ler(k) {
-  try { return window.localStorage.getItem(k) } catch (e) { return null }
-}
-function gravar(k, v) {
-  try { window.localStorage.setItem(k, v) } catch (e) { /* ignora */ }
-}
-function apagar(k) {
-  try { window.localStorage.removeItem(k) } catch (e) { /* ignora */ }
-}
-
 function AgeGate() {
-  // 'checking' | 'ask' | 'blocked' | 'done'
-  const [status, setStatus] = useState('checking')
-
-  useEffect(() => {
-    if (ler(AGE_BLOCK) === 'true') { setStatus('blocked'); return }
-    if (ler(AGE_KEY) === 'true') { setStatus('done'); return }
-    setStatus('ask')
-  }, [])
+  // Sempre mostra o pop-up ao carregar/recarregar (sem localStorage)
+  // 'ask' | 'blocked' | 'done'
+  const [status, setStatus] = useState('ask')
 
   useEffect(() => {
     const lock = status === 'ask' || status === 'blocked'
@@ -34,10 +16,12 @@ function AgeGate() {
     }
   }, [status])
 
-  const confirmar = () => { gravar(AGE_KEY, 'true'); setStatus('done') }
-  const negar = () => { gravar(AGE_BLOCK, 'true'); apagar(AGE_KEY); setStatus('blocked') }
+  // Fecha e libera o acesso, sem gravar nada
+  const confirmar = () => setStatus('done')
+  // Mostra a mensagem de bloqueio, sem gravar nada
+  const negar = () => setStatus('blocked')
 
-  if (status === 'checking' || status === 'done') return null
+  if (status === 'done') return null
 
   if (status === 'blocked') {
     return (
