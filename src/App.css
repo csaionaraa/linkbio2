@@ -1,4 +1,124 @@
+/* ===== Age Gate ===== */
+#mg-age-gate {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  background: rgba(12, 12, 16, .92);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 2147483647 !important;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.4;
+}
+#mg-age-gate * { box-sizing: border-box; margin: 0; padding: 0; }
 
+#mg-age-gate .mg-age-box {
+  background: #fff;
+  color: #1a1a1a;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 14px;
+  padding: 32px 26px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .4);
+  margin: auto;
+}
+
+#mg-age-gate .mg-age-title {
+  font-size: clamp(1.15rem, 4.5vw, 1.5rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 10px !important;
+}
+#mg-age-gate .mg-age-text {
+  font-size: clamp(.9rem, 3.5vw, 1rem);
+  color: #555;
+  margin: 0 0 22px !important;
+}
+#mg-age-gate .mg-age-note {
+  display: block;
+  margin-top: 18px !important;
+  font-size: clamp(.68rem, 2.8vw, .75rem);
+  color: #888;
+}
+
+#mg-age-gate .mg-age-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#mg-age-gate .mg-age-btn {
+  flex: 1 1 140px;
+  min-height: 48px;
+  padding: 13px 20px;
+  border: none !important;
+  border-radius: 8px;
+  font-size: clamp(.85rem, 3.2vw, .95rem);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .2s ease, color .2s ease, transform .15s ease;
+}
+#mg-age-gate .mg-age-btn--yes { background: #000; color: #fff; }
+#mg-age-gate .mg-age-btn--no { background: #eceef1; color: #444; }
+
+#mg-age-gate.mg-blocked { background: rgba(8, 8, 10, .98); }
+#mg-age-gate.mg-blocked .mg-age-title { color: #b3261e; }
+
+html.mg-age-lock,
+body.mg-age-lock {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+@media (hover: hover) {
+  #mg-age-gate .mg-age-btn:hover { transform: translateY(-2px); background: #1e7d32; color: #fff; }
+}
+@media (hover: none) {
+  #mg-age-gate .mg-age-btn:active { transform: scale(.98); opacity: .85; }
+}
+
+@media (max-width: 600px) {
+  #mg-age-gate { padding: 16px; }
+  #mg-age-gate .mg-age-box { padding: 28px 22px; border-radius: 12px; }
+}
+@media (max-width: 480px) {
+  #mg-age-gate .mg-age-box { padding: 24px 18px; }
+  #mg-age-gate .mg-age-text { margin-bottom: 18px !important; }
+  #mg-age-gate .mg-age-actions { flex-direction: column; gap: 10px; }
+  #mg-age-gate .mg-age-btn { width: 100%; flex: 1 1 auto; }
+}
+@media (max-width: 360px) {
+  #mg-age-gate { padding: 12px; }
+  #mg-age-gate .mg-age-box { padding: 20px 14px; }
+}
+@media (max-height: 520px) {
+  #mg-age-gate { align-items: flex-start; }
+  #mg-age-gate .mg-age-box { padding: 20px 18px; }
+  #mg-age-gate .mg-age-text { margin-bottom: 14px !important; }
+  #mg-age-gate .mg-age-btn { min-height: 42px; padding: 10px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #mg-age-gate .mg-age-btn { transition: none; }
+}
 
 .counter {
   font-size: 16px;

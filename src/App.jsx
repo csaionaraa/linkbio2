@@ -1,4 +1,75 @@
+import { useState, useEffect } from 'react'
 import './App.css'
+
+const AGE_KEY = 'mgAgeVerified'
+const AGE_BLOCK = 'mgAgeBlocked'
+
+function ler(k) {
+  try { return window.localStorage.getItem(k) } catch (e) { return null }
+}
+function gravar(k, v) {
+  try { window.localStorage.setItem(k, v) } catch (e) { /* ignora */ }
+}
+function apagar(k) {
+  try { window.localStorage.removeItem(k) } catch (e) { /* ignora */ }
+}
+
+function AgeGate() {
+  // 'checking' | 'ask' | 'blocked' | 'done'
+  const [status, setStatus] = useState('checking')
+
+  useEffect(() => {
+    if (ler(AGE_BLOCK) === 'true') { setStatus('blocked'); return }
+    if (ler(AGE_KEY) === 'true') { setStatus('done'); return }
+    setStatus('ask')
+  }, [])
+
+  useEffect(() => {
+    const lock = status === 'ask' || status === 'blocked'
+    document.documentElement.classList.toggle('mg-age-lock', lock)
+    document.body.classList.toggle('mg-age-lock', lock)
+    return () => {
+      document.documentElement.classList.remove('mg-age-lock')
+      document.body.classList.remove('mg-age-lock')
+    }
+  }, [status])
+
+  const confirmar = () => { gravar(AGE_KEY, 'true'); setStatus('done') }
+  const negar = () => { gravar(AGE_BLOCK, 'true'); apagar(AGE_KEY); setStatus('blocked') }
+
+  if (status === 'checking' || status === 'done') return null
+
+  if (status === 'blocked') {
+    return (
+      <div id="mg-age-gate" className="mg-blocked">
+        <div className="mg-age-box">
+          <h2 className="mg-age-title">Acesso não permitido</h2>
+          <p className="mg-age-text">Este conteúdo é destinado apenas a maiores de 18 anos.</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div id="mg-age-gate">
+      <div className="mg-age-box">
+        <h2 className="mg-age-title">Verificação de Idade</h2>
+        <p className="mg-age-text">Você tem 18 anos ou mais?</p>
+        <div className="mg-age-actions">
+          <button type="button" className="mg-age-btn mg-age-btn--yes" onClick={confirmar}>
+            Sim, tenho 18+
+          </button>
+          <button type="button" className="mg-age-btn mg-age-btn--no" onClick={negar}>
+            Não
+          </button>
+        </div>
+        <span className="mg-age-note">
+          Ao entrar, você confirma ter idade legal para acessar este conteúdo.
+        </span>
+      </div>
+    </div>
+  )
+}
 
 function App() {
 
@@ -48,6 +119,8 @@ function App() {
 
   return (
     <div className="container">
+
+      <AgeGate />
 
       <div className="overlay"></div>
 
