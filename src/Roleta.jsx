@@ -5,9 +5,7 @@ import "./Roleta.css";
 // CONFIG
 // ─────────────────────────────────────────────
 const CONFIG = {
-  REDIRECT_URL: "/premio",
-  REDIRECT_URL_PRATA: "/premio",
-  REDIRECT_URL_BRONZE: "/premios",
+  REDIRECT_URL: "/premios",
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw6IJXOfhS93mWjtsxopSjZ3sB19Un671BMA3UCYZwnaAnFDD8rtSo6SxxlpfBPpsk5Ng/exec",
 
   HERO_BG_DESKTOP: "/imgs/roleta-desktop.png",
@@ -61,7 +59,7 @@ const PRIZE_TIERS = [
     icon: "/icons/medalha-bronze.webp",
     title: "PRÊMIOS BRONZE",
     items: [
-      { icon: "/icons/presente-bronze2.webp", text: "Acesso ao meu Grupo VIP por 7 dias" },
+      { icon: "/icons/presente-bronze2.webp", text: "Acesso a comunidade exclusiva de graça." },
       { icon: "/icons/presente-bronze2.webp", text: "Acesso ao meu Grupo VIP Odds Altas por 7 dias" },
       { icon: "/icons/coroa-bronze2.webp", text: "Acesso ao meu Grupo de Placares" },
     ],
@@ -632,17 +630,11 @@ function WheelSection({ sectionRef }) {
     };
   }, []);
 
-  function startRedirectCountdown(winnerSegment) {
+  function startRedirectCountdown() {
     let secs = 3;
     setCountdown(secs);
 
-    const label = winnerSegment?.label;
-    const redirectUrl =
-      label === "BRONZE"
-        ? CONFIG.REDIRECT_URL_BRONZE // BRONZE -> /premios
-        : label === "PRATA"
-        ? CONFIG.REDIRECT_URL_PRATA // PRATA -> /premio
-        : CONFIG.REDIRECT_URL;
+    const redirectUrl = CONFIG.REDIRECT_URL;
 
     intervalRef.current = setInterval(() => {
       secs -= 1;
@@ -718,7 +710,7 @@ function WheelSection({ sectionRef }) {
 
     spin(winner.index, () => {
       setResult(winner.segment);
-      startRedirectCountdown(winner.segment);
+      startRedirectCountdown();
     });
   }
 

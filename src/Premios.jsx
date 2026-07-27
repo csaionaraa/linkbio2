@@ -146,13 +146,13 @@ export default function Premios() {
 
           <div className="premios-ganhou-box">
             <div className="premios-topo">
-              VOCÊ GANHOU ACESSO AO MEU GRUPO VIP POR 7 DIAS
+               PARABÉNS, VOCÊ GANHOU ACESSO GRATUITO E EXCLUSIVO A MINHA COMUNIDADE!
             </div>
 
             <div className="premios-conteudo">
               <div className="premios-trofeu">🏆</div>
 
-              <h2>COMUNIDADE EXCLUSIVA DO WHATSAPP</h2>
+              <h2>CLIQUE NO BOTÃO ABAIXO E RESGATE SEU ACESSO GRATUITO</h2>
 
               <p>
                 Acesso ao meu Grupo VIP por 7 dias

@@ -141,13 +141,13 @@ export default function Premiacao() {
 
           <div className="ganhou-box">
             <div className="premio-topo">
-              VOCÊ GANHOU ACESSO AOS MEUS GRUPOS VIP E VIP ODDS ALTA POR 7 DIAS
+              PARABÉNS, VOCÊ GANHOU ACESSO GRATUITO E EXCLUSIVO A MINHA COMUNIDADE!
             </div>
 
             <div className="premio-conteudo">
               <div className="trofeu">🏆</div>
 
-              <h2>COMUNIDADE EXCLUSIVA DO WHATSAPP</h2>
+              <h2>CLIQUE NO BOTÃO ABAIXO E RESGATE SEU ACESSO GRATUITO</h2>
             </div>
           </div>
 

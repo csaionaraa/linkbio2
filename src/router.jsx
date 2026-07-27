@@ -5,10 +5,8 @@ import Acesso from "./Acesso";
 import Gratuito from "./Gratuito";
 import Roleta from "./Roleta";
 import Roletapremiada from "./Roletapremiada";
-import Premio from "./Premio";
 import Premios from "./Premios";
 import Premiacao from "./Premiacao";
-import Premiacoes from "./Premiacoes";
 import Tipdodia from "./Tipdodia";
 import Grupo from "./Grupo";
 import Grupobingo from "./Grupobingo";
@@ -24,8 +22,6 @@ export function Router() {
         <Route path="/roleta" element={<Roleta />} />
         <Route path="/roletapremiada" element={<Roletapremiada />} />
         <Route path="/premiacao" element={<Premiacao />} />
-        <Route path="/premiacoes" element={<Premiacoes />} />
-        <Route path="/premio" element={<Premio />} />
         <Route path="/premios" element={<Premios />} />
         <Route path="/tipdodia" element={<Tipdodia />} />
         <Route path="/grupo" element={<Grupo />} />
