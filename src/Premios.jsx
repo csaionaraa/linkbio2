@@ -154,9 +154,6 @@ export default function Premios() {
 
               <h2>CLIQUE NO BOTÃO ABAIXO E RESGATE SEU ACESSO GRATUITO</h2>
 
-              <p>
-                Acesso ao meu Grupo VIP por 7 dias
-              </p>
             </div>
           </div>
 
