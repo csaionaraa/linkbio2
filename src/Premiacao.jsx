@@ -160,7 +160,7 @@ export default function Premiacao() {
           </div>
 
           <div className="beneficios">
-            <h3>🎁 O QUE VOCÊ GANHA NO GRUPO VIP</h3>
+            <h3>🎁 O QUE VOCÊ GANHA NA COMUNIDADE DO WHATSAPP</h3>
 
             <div className="beneficios-grid">
               <div className="beneficio">

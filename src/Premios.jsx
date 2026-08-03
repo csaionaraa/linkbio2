@@ -166,7 +166,7 @@ export default function Premios() {
           </div>
 
           <div className="premios-beneficios">
-            <h3>🎁 O QUE VOCÊ GANHA NO GRUPO VIP</h3>
+            <h3>🎁 O QUE VOCÊ GANHA NA COMUNIDADE DO WHATSAPP</h3>
 
             <div className="premios-beneficios-grid">
               <div className="premios-beneficio">
