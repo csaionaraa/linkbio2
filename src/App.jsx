@@ -60,43 +60,23 @@ function App() {
   const buttons = [
     {
       id: 1,
-      image: "/buttons/grupofree.png",
+      image: "/buttons/free.png",
       link: "https://telegram.me/+LznpxBiUUGhkYWRh"
     },
     {
       id: 2,
-      image: "/buttons/grupovip.png",
-      link: "https://mais.red/run/LuisaVipLP",
+      image: "/buttons/vip.png",
+      link: "https://mais.red/run/LuisaComboVIPIG",
       className: "vip-button"
     },
     {
       id: 3,
-      image: "/buttons/superodds.png",
-      link: "https://telegram.me/+od5FBJEJl0U0MDUx"
+      image: "/buttons/combo.png",
+      link: "https://mais.red/run/LuisaComboEspeciaisIG"
     },
     {
       id: 4,
-      image: "/buttons/nbafree.png",
-      link: "https://telegram.me/+kcU-0wV41cNlYzJh"
-    },
-    {
-      id: 5,
-      image: "/buttons/projetox.png",
-      link: "https://mais.red/run/LuisaInstaAlavancagem"
-    },
-    {
-      id: 6,
-      image: "/buttons/placares.png",
-      link: "https://mais.red/run/LuisaBioInstaPlacares"
-    },
-    {
-      id: 7,
-      image: "/buttons/superodds-bingo.png",
-      link: "https://mais.red/run/LuisaBioSuper100"
-    },
-    {
-      id: 8,
-      image: "/buttons/news.png",
+      image: "/buttons/WPP.png",
       link: "https://chat.whatsapp.com/HoOsROpZt58FbTPnERP5tR"
     },
   ]
