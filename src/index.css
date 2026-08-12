@@ -17,7 +17,7 @@ body {
 .container {
   width: 100%;
   min-height: 100vh;
-  background-image: url('/buttons/bg-luisa-desktop-1.png');
+  background-image: url('/buttons/bgfundoazul.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -115,7 +115,7 @@ body {
 @media (max-width: 768px) {
 
   .container {
-    background-image: url('/buttons/bg-luisa-mobile-1.png');
+    background-image: url('/buttons/bgfundoazul.png');
   }
 
 }

@@ -1345,5 +1345,20 @@ input {
   }
 }
 
+/* imagem do termo (+18 / Ministério da Fazenda) no hero */
+.rp-termo-image {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin-top: 20px;
+}
 
+@media (max-width: 767px) {
+  .rp-termo-image {
+    max-width: 240px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 
