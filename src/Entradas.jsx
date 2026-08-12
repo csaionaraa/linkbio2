@@ -6,7 +6,7 @@ function Entradas() {
 
 
   return (
-    <div className="container">
+    <div className="entradas-container">
       <div className="overlay"></div>
 
       <main className="content">
