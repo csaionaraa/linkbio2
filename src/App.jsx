@@ -61,7 +61,7 @@ function App() {
     {
       id: 1,
       image: "/buttons/free.png",
-      link: "https://telegram.me/+LznpxBiUUGhkYWRh"
+      link: "https://t.me/+HAjvcswtZ4E3YWNh"
     },
     {
       id: 2,
