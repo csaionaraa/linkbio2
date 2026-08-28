@@ -18,9 +18,7 @@ body {
   width: 100%;
   min-height: 100vh;
   background-color: #000;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.88)),
-    url('/buttons/bgfundoazul.png');
+  background-image: url('/buttons/bgfundoazul.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -119,9 +117,7 @@ body {
 
   .container {
     background-color: #000;
-    background-image:
-      linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.88)),
-      url('/buttons/bgfundoazul.png');
+    background-image: url('/buttons/bgfundoazul.png');
   }
 
 }

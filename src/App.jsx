@@ -86,8 +86,6 @@ function App() {
 
       <AgeGate />
 
-      <div className="overlay"></div>
-
       <main className="content">
 
         {/* FOTO TOPO */}
